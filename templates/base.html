@@ -1,0 +1,17 @@
+{% block navigation %}
+    {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}">
+            <button>Logout</button>
+        </a>
+    {% else %}
+        <a href="{% url 'registration' %}">
+            <button>Registration</button>
+        </a>
+        <a href="{% url 'login' %}">
+            <button>Login</button>
+        </a>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+{% endblock %}

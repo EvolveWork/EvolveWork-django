@@ -1,6 +1,5 @@
-<a href="{% url 'registration' %}">
-    <button>Registration</button>
-</a>
+{% extends 'base.html' %}
+{% block content %}
 <form method="post" action="{% url 'login' %}">
     {% csrf_token %}
     <table>
@@ -14,5 +13,5 @@
         </tr>
     </table>
     <input type="submit" value="login" class="login"/>
-    <!--<h1><a href="{% url 'registration' %}" class="button special">Register</a></h1>-->
 </form>
+{% endblock %}

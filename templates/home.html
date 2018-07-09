@@ -1,12 +1,4 @@
-{% if user.is_authenticated %}
-    <h1>Hello World</h1>
-{% endif %}
-<a href="{% url 'login' %}">
-    <button>Login</button>
-</a>
-<a href="{% url 'registration' %}">
-    <button>Registration</button>
-</a>
+{% extends 'base.html' %}
 
 
 <!--<form action="" method="post">-->

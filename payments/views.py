@@ -1,10 +1,10 @@
 # import stripe
-from django.conf import settings
 from django.contrib.auth import authenticate, login, get_user_model
+from django.contrib.auth.views import logout
 from django.core.checks import messages
-from django.core.mail import send_mail
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
+
 from .forms import LoginForm, RegistrationForm
 
 User = get_user_model()
@@ -30,6 +30,11 @@ def login_view(request):
         else:
             print("Login Error")
     return render(request, 'login.html', context)
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('/')
 
 
 def charge_view(request):
@@ -58,6 +63,7 @@ def registration_view(request):
         #           ['bontecouc@gmail.com'], fail_silently=False)
         return HttpResponseRedirect('registration/redirect')
     return render(request, "registration.html", context)
+
 
 def registration_redirect(request):
     return render(request, "registration_redirect.html", {})
