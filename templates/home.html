@@ -1,0 +1,19 @@
+{% if user.is_authenticated %}
+    <h1>Hello World</h1>
+{% endif %}
+<a href="{% url 'login' %}">
+    <button>Login</button>
+</a>
+<a href="{% url 'registration' %}">
+    <button>Registration</button>
+</a>
+
+
+<!--<form action="" method="post">-->
+<!--{% csrf_token %}-->
+<!--<script src="https://checkout.stripe.com/checkout.js" class="stripe-button"-->
+<!--data-key=""-->
+<!--data-description="A Django Charge"-->
+<!--data-amount="500"-->
+<!--data-locale="auto"></script>-->
+<!--</form>-->

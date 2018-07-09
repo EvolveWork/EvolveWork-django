@@ -1,0 +1,18 @@
+<a href="{% url 'registration' %}">
+    <button>Registration</button>
+</a>
+<form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    <table>
+        <tr>
+            <td>{{ form.username.label_tag }}</td>
+            <td>{{ form.username }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.password.label_tag }}</td>
+            <td>{{ form.password }}</td>
+        </tr>
+    </table>
+    <input type="submit" value="login" class="login"/>
+    <!--<h1><a href="{% url 'registration' %}" class="button special">Register</a></h1>-->
+</form>
