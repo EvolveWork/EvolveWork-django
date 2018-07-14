@@ -9,3 +9,4 @@ urlpatterns = [
     path('registration', registration_view, name='registration'),
     path('registration/redirect', registration_redirect, name='registration_redirect'),
 ]
+
