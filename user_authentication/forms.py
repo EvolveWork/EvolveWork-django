@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import UserCreationForm
 
 User = get_user_model()
 
@@ -41,3 +42,11 @@ class RegistrationForm(forms.Form):
         if password2 != password:
             raise forms.ValidationError("Passwords must match")
         return data
+
+
+class SignupForm(UserCreationForm):
+    email = forms.EmailField(max_length=200, help_text='Required')
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password1', 'password2')
