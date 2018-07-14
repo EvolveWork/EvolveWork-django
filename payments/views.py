@@ -43,6 +43,9 @@ def charge_view(request):
 
 
 def registration_view(request):
+    user = request.user
+    if user.is_authenticated:
+        return redirect('/')
     form = RegistrationForm(request.POST or None)
     context = {
         "form": form
