@@ -49,36 +49,6 @@ def charge_view(request):
     return render(request, 'charge.html', context)
 
 
-def registration_view(request):
-    user = request.user
-    if user.is_authenticated:
-        return redirect('/')
-    form = RegistrationForm(request.POST or None)
-    context = {
-        "form": form
-    }
-    if form.is_valid():
-        messages.Info(request, "Thanks for registering. You are now logged in.")
-        username = form.cleaned_data.get("username")
-        email = form.cleaned_data.get("email")
-        password = form.cleaned_data.get("password")
-        new_user = User.objects.create_user(username, email, password)
-
-        new_user.is_active = False
-        new_user.save()
-
-        # send_mail('Complete your registration',
-        #           new_user.username + ' has registered. Please activate the account.',
-        #           settings.EMAIL_HOST_USER,
-        #           ['bontecouc@gmail.com'], fail_silently=False)
-        return HttpResponseRedirect('registration/redirect')
-    return render(request, "registration.html", context)
-
-
-def registration_redirect(request):
-    return render(request, "registration_redirect.html", {})
-
-
 def signup(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)
