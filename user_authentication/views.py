@@ -60,30 +60,25 @@ def signup(request):
             message = render_to_string('acc_active_email.html', {
                 'user': user,
                 'domain': current_site.domain,
-                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
                 'token': account_activation_token.make_token(user),
             })
             mail_subject = 'Activate your Evolve Co-working account.'
             to_email = form.cleaned_data.get('email')
-            # email = EmailMessage(mail_subject, message, to=[to_email])
-            # email.send()
-
             send_mail(mail_subject,
                       message,
                       settings.EMAIL_HOST_USER,
                       [to_email], fail_silently=False)
 
             return HttpResponse('Please confirm your email address to complete the registration')
-
     else:
         form = SignupForm()
-
     return render(request, 'signup.html', {'form': form})
 
 
 def activate(request, uidb64, token):
     try:
-        uid = force_text(urlsafe_base64_decode(uidb64))
+        uid = urlsafe_base64_decode(uidb64).decode()
         user = User.objects.get(pk=uid)
     except(TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
