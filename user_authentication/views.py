@@ -1,17 +1,16 @@
 # import stripe
 from django.conf import settings
-from django.contrib.auth import authenticate, login, get_user_model
+from django.contrib.auth import login, get_user_model
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import logout
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
-from .forms import LoginForm, SignupForm
+from .forms import SignupForm
 from .tokens import account_activation_token
 
 User = get_user_model()
