@@ -1,7 +1,5 @@
-# import stripe
 from django.conf import settings
 from django.contrib.auth import login, get_user_model
-from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
 from django.http import HttpResponse
@@ -18,12 +16,6 @@ User = get_user_model()
 
 def home_page_view(request):
     return render(request, 'home.html', {})
-
-
-@login_required
-def charge_view(request):
-    context = {}
-    return render(request, 'charge.html', context)
 
 
 def signup(request):
@@ -50,11 +42,11 @@ def signup(request):
             return HttpResponse('signup_confirm')
     else:
         form = SignupForm()
-    return render(request, 'registration/signup.html', {'form': form})
+    return render(request, 'signup.html', {'form': form})
 
 
 def signup_confirm(request):
-    return render(request, 'registration/signup_confirm.html', {})
+    return render(request, 'signup_confirm.html', {})
 
 
 def activate(request, uidb64, token):
@@ -67,36 +59,6 @@ def activate(request, uidb64, token):
         user.is_active = True
         user.save()
         login(request, user)
-        # return redirect('home')
-        return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+        return HttpResponse('')
     else:
         return HttpResponse('Activation link is invalid!')
-
-#     try:
-#         charge = stripe.Charge.create(
-#             amount={{amount}},
-#             currency="usd",
-#             customer={{customer}},
-#             description={{description}},
-#             metadata={{this.id}}
-#         )
-#     except stripe.error.CardError as e:
-#         # Problem with the card
-#         pass
-#     except stripe.error.RateLimitError as e:
-#         # Too many requests made to the API too quickly
-#         pass
-#     except stripe.error.InvalidRequestError as e:
-#         # Invalid parameters were supplied to Stripe API
-#         pass
-#     except stripe.error.AuthenticationError as e:
-#         # Authentication Error: Authentication with Stripe API failed (maybe you changed API keys recently)
-#         pass
-#     except stripe.error.APIConnectionError as e:
-#         # Network communication with Stripe failed
-#         pass
-#     except stripe.error.StripeError as e:
-#         # Stripe Error
-#         pass
-#     else:
-# # success

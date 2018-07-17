@@ -31,20 +31,18 @@ ALLOWED_HOSTS = []
 
 EXTERNAL_APPS = [
     # Django core apps
-    # 'django_admin_bootstrapped',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    # billing
-    'user_authentication',
-    'djstripe',
 ]
 
-INTERNAL_APPS = []
+INTERNAL_APPS = [
+    'user_authentication',
+    'stripe_charge',
+]
 
 INSTALLED_APPS = EXTERNAL_APPS + INTERNAL_APPS
 
@@ -63,7 +61,7 @@ ROOT_URLCONF = 'evolve_work.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'],
+        'DIRS': ['templates', 'templates/registration', 'stripe_charge'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

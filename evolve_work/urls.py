@@ -19,5 +19,5 @@ from django.urls import path, include
 urlpatterns = [
     path('', include('user_authentication.urls')),
     path('admin/', admin.site.urls),
-    path('user_authentication/', include('djstripe.urls', namespace="djstripe")),
+    path('charge/', include('stripe_charge.urls')),
 ]

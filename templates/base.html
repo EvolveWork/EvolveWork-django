@@ -1,4 +1,8 @@
+{% block head %}
+{% endblock %}
+
 {% block navigation %}
+    <a href="{% url 'home' %}"><button>Home</button></a>
     {% if user.is_authenticated %}
         <a href="{% url 'logout' %}">
             <button>Logout</button>
