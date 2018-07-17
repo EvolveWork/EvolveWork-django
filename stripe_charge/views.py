@@ -34,11 +34,15 @@ def checkout(request):
             description="The product charged to the user"
         )
 
-        payee.charge_id = charge.id
+        payee.stripe_id = charge.id
 
     except stripe.error.CardError as ce:
         return False, ce
 
     else:
         payee.save()
-        return redirect('')
+        return redirect('charge_success')
+
+
+def charge_success(request):
+    return render(request, 'charge_success.html', {})

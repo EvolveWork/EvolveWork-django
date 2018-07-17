@@ -3,7 +3,7 @@
 
 
 {% block content %}
-    <form action="{% url 'checkout' %}" method="POST">
+    <form action="{% url 'checkout' %}" method="POST">{% csrf_token %}
         <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
                 data-key="{{ stripe_key }}"
                 data-amount="2000"
