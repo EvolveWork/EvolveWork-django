@@ -1,24 +1,16 @@
 {% extends 'base.html' %}
 
-{% block head %}
-    <script src="https://js.stripe/v2" type="text/javascript"></script>
-    <script type="text/javascript">
-    //<![CDATA[
-    Stripe.setPublishableKey('{{ publishable }}');﻿
-    // ]]>
-    </script>
-    <script src="/static/js/app.js" type="text/javascript"></script>
-{% endblock %}
+
 
 {% block content %}
-    <form id="charge_form" method="POST" action="{% url 'charge' %}">
-    {% csrf_token %}
-    <noscript>&lt;p&gt; This form requires Javascript to work! &lt;/p&gt;</noscript>
-    {{ form.non_field_errors }}
-    {{ form.field_errors }}
-    <fieldset>
-        <legend>Charge</legend>
-
-    </fieldset>
+    <form action="{% url 'checkout' %}" method="POST">
+        <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                data-key="{{ stripe_key }}"
+                data-amount="2000"
+                data-name="Evolve Coworking"
+                data-description="Your Product"
+                data-currency="usd">
+{#                data-image="Link to your logo"#}
+        </script>
     </form>
 {% endblock %}

@@ -1,44 +1,44 @@
-import datetime
-
-import stripe
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect, render_to_response
-from django.template.context_processors import csrf
+from django.shortcuts import render, redirect
 
-from .forms import StripeBillingForm
+from .models import BillingProfile
+
+import stripe
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 @login_required
 def charge_view(request):
-    if request.method == 'POST':
-        form = StripeBillingForm(request.POST)
-        if form.is_valid():
-            try:
-                # Amount is dealt with in units. 499 = $4.99 when currency = USD
-                charge = stripe.Charge.create(
-                    amount=499,
-                    currency='USD',
-                    customer=form.cleaned_data['email'],
-                    card=form.cleaned_data['stripe_id']
-                )
-                form.save()
-                redirect('/')
-            except stripe.CardError as e:
-                # Problem with the card
-                form.add_error("The card has been declined")
-        else:
-            # success
-            form = StripeBillingForm()
+    context = {"stripe_key": settings.STRIPE_TEST_PUBLIC_KEY}
+    return render(request, "charge.html", context)
 
-        context = {}
-        context.update(csrf(request))
-        context['form'] = form
-        context['publishable'] = settings.STRIPE_PUBLISHABLE_KEY
-        context['months'] = range(1, 12)
-        context['years'] = range(2011, 2036)
-        context['soon'] = datetime.date.today() + datetime.timedelta(days=30)
 
-        return render_to_response('charge.html', context)
+@login_required
+def checkout(request):
+    payee = BillingProfile(
+        first_name="Cody",
+        last_name="Bontecou",
+        email="bontecouc@gmail.com",
+    )
+
+    if request.method == "POST":
+        token = request.POST.get("stripeToken")
+
+    try:
+        charge = stripe.Charge.create(
+            amount=2000,
+            currency="usd",
+            source=token,
+            description="The product charged to the user"
+        )
+
+        payee.charge_id = charge.id
+
+    except stripe.error.CardError as ce:
+        return False, ce
+
+    else:
+        payee.save()
+        return redirect('')
