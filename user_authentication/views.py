@@ -64,6 +64,7 @@ def activate(request, uidb64, token):
         user.is_active = True
         user.save()
         login(request, user)
+        messages.add_message(request, messages.INFO, 'Account activated')
         return redirect('home')
     else:
         return HttpResponse('Activation link is invalid!')
