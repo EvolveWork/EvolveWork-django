@@ -37,10 +37,6 @@ EXTERNAL_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites.models.Site',
-
-    # Payment processing
-    'pinax.stripe'
 ]
 
 INTERNAL_APPS = [
@@ -143,7 +139,3 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 LOGIN_REDIRECT_URL = '/'
 
-# pinax-stripe variables
-SITE_ID = 1
-PINAX_STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_TEST_PUBLIC_KEY')
-PINAX_STRIPE_SECRET_KEY = os.environ.get('STRIPE_TEST_SECRET_KEY')

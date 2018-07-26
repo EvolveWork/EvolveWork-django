@@ -1,10 +1,12 @@
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth import login, get_user_model
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
-from django.http import HttpResponse
-from django.shortcuts import render
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
+from django.urls import reverse
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
@@ -14,8 +16,11 @@ from .tokens import account_activation_token
 User = get_user_model()
 
 
-def home_page_view(request):
-    return render(request, 'home.html', {})
+def home_page_view(request, notification=None):
+    context = {
+        'notification': notification
+    }
+    return render(request, 'home.html', context)
 
 
 def signup(request):
@@ -39,7 +44,7 @@ def signup(request):
                       settings.EMAIL_HOST_USER,
                       [to_email], fail_silently=False)
 
-            return HttpResponse('signup_confirm')
+            return redirect('signup_confirm')
     else:
         form = SignupForm()
     return render(request, 'signup.html', {'form': form})
@@ -59,6 +64,6 @@ def activate(request, uidb64, token):
         user.is_active = True
         user.save()
         login(request, user)
-        return HttpResponse('')
+        return redirect('home')
     else:
         return HttpResponse('Activation link is invalid!')

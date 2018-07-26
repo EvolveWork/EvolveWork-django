@@ -20,5 +20,4 @@ urlpatterns = [
     path('', include('user_authentication.urls')),
     path('admin/', admin.site.urls),
     path('charge/', include('stripe_charge.urls')),
-    path('payments/', include('pinax.stripe.urls')),
 ]
