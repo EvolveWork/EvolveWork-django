@@ -17,31 +17,34 @@ def charge_view(request):
 
 @login_required
 def checkout(request):
-    payee = BillingProfile(
-        first_name="Cody",
-        last_name="Bontecou",
-        email="bontecouc@gmail.com",
-    )
-
     if request.method == "POST":
+        payee = BillingProfile(
+            name=request.POST.get('stripeBillingName'),
+            email=request.POST.get('stripeEmail'),
+            stripeBillingAddressLine1=request.POST.get('stripeBillingAddressLine1'),
+            zipCode=request.POST.get('stripeBillingAddressZip'),
+            billingAddressState=request.POST.get('stripeBillingAddressState'),
+            billingAddressCity=request.POST.get('stripeBillingAddressCity'),
+            billingAddressCountry=request.POST.get('stripeBillingAddressCountry')
+        )
         token = request.POST.get("stripeToken")
 
-    try:
-        charge = stripe.Charge.create(
-            amount=2000,
-            currency="usd",
-            source=token,
-            description="The product charged to the user"
-        )
+        try:
+            charge = stripe.Charge.create(
+                amount=2000,
+                currency="usd",
+                source=token,
+                description="The product charged to the user"
+            )
 
-        payee.stripe_id = charge.id
+            payee.stripe_id = charge.id
 
-    except stripe.error.CardError as ce:
-        return False, ce
+        except stripe.error.CardError as ce:
+            return False, ce
 
-    else:
-        payee.save()
-        return redirect('charge_success')
+        else:
+            payee.save()
+            return redirect('charge_success')
 
 
 def charge_success(request):
