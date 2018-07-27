@@ -1,4 +1,6 @@
 from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
@@ -27,17 +29,13 @@ def checkout(request):
             billingAddressCity=request.POST.get('stripeBillingAddressCity'),
             billingAddressCountry=request.POST.get('stripeBillingAddressCountry')
         )
-        token = request.POST.get("stripeToken")
-
         try:
-            charge = stripe.Charge.create(
-                amount=2000,
-                currency="usd",
-                source=token,
-                description="The product charged to the user"
+            customer = stripe.Customer.create(
+                email=payee.email,
+                plan='plan_DJBWu9zs91csmJ',
+                card=request.POST.get("stripeToken")
             )
-
-            payee.stripe_id = charge.id
+            payee.stripeId = customer.id
 
         except stripe.error.CardError as ce:
             return False, ce
@@ -49,3 +47,16 @@ def checkout(request):
 
 def charge_success(request):
     return render(request, 'charge_success.html', {})
+
+
+def cancel_subscription(request):
+    try:
+        customer = stripe.Customer.retrieve(request.user.stripeId)
+        customer.cancel_subscription(at_period_end=True)
+        messages.add_message(request, messages.INFO,
+                             'Subscription canceled. Your access to Evolve Coworking ends ' +
+                             str(customer.current_period_end))
+    except Exception as e:
+        messages.error(request, e)
+
+    return render(request, 'home.html', {})
