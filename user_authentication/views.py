@@ -3,10 +3,9 @@ from django.contrib import messages
 from django.contrib.auth import login, get_user_model
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
-from django.urls import reverse
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 

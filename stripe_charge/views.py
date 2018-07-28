@@ -1,12 +1,10 @@
+import stripe
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
 from .models import BillingProfile
-
-import stripe
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 

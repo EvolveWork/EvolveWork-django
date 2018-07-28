@@ -46,6 +46,8 @@ INTERNAL_APPS = [
 
 INSTALLED_APPS = EXTERNAL_APPS + INTERNAL_APPS
 
+AUTH_USER_MODEL = 'user_authentication.User'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -122,6 +124,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+
 STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_LIVE_PUBLIC_KEY")
 STRIPE_SECRET_KEY = os.environ.get("STRIPE_LIVE_SECRET_KEY")
 STRIPE_TEST_PUBLIC_KEY = os.environ.get("STRIPE_TEST_PUBLIC_KEY")
@@ -138,4 +141,5 @@ EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 LOGIN_REDIRECT_URL = '/'
+
 
