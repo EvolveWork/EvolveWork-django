@@ -1,18 +1,19 @@
 import stripe
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
-# @login_required
+@login_required
 def charge_view(request):
     context = {"stripe_key": settings.STRIPE_TEST_PUBLIC_KEY}
     return render(request, "charge.html", context)
 
 
-# @login_required
+@login_required
 def checkout(request):
     if request.method == "POST":
         payee = request.user
