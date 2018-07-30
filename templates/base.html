@@ -7,7 +7,7 @@
     </a>
     {% if user.is_authenticated %}
         <a href="{% url 'password_change' %}">
-            <button>{{ user.username }}</button>
+            <button>{{ user.email }}</button>
         </a>
         <a href="{% url 'logout' %}">
             <button>Logout</button>

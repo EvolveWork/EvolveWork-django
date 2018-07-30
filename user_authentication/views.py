@@ -27,7 +27,7 @@ def signup(request):
         form = SignupForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            user.is_active = False
+            # user.is_active = False
             user.save()
             current_site = get_current_site(request)
             message = render_to_string('acc_active_email.html', {

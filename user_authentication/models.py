@@ -49,12 +49,12 @@ class User(AbstractBaseUser):
     staff = models.BooleanField(default=False)
     admin = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
-    stripeId = models.CharField(max_length=255)
-    stripeBillingAddressLine1 = models.CharField(max_length=255)
-    zipCode = models.CharField(max_length=255)
-    billingAddressState = models.CharField(max_length=255)
-    billingAddressCity = models.CharField(max_length=255)
-    billingAddressCountry = models.CharField(max_length=255)
+    stripeId = models.CharField(max_length=255, blank=True, null=True)
+    stripeBillingAddressLine1 = models.CharField(max_length=255, blank=True, null=True)
+    zipCode = models.CharField(max_length=255, blank=True, null=True)
+    billingAddressState = models.CharField(max_length=255, blank=True, null=True)
+    billingAddressCity = models.CharField(max_length=255, blank=True, null=True)
+    billingAddressCountry = models.CharField(max_length=2, blank=True, null=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['full_name']
