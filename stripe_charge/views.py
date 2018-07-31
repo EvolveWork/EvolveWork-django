@@ -53,7 +53,6 @@ def cancel_subscription(request):
         subscription_id = customer.subscriptions.get('data')[0].get('id')
         subscription = stripe.Subscription.retrieve(subscription_id)
         subscription.delete(at_period_end=True)
-        # customer.cancel_subscription(at_period_end=True)
     except Exception as e:
         messages.error(request, e)
 
