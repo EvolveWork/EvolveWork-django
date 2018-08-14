@@ -20,11 +20,10 @@ class UserTests(unittest.TestCase):
         assert 'evolve work' in self.browser.title
 
         # Page loads with plans
-        plans = self.browser.find_element_by_id('plans')
-        self.assertEqual(
-            plans.get_attribute('placeholder'),
-            'Select a plan'
-        )
+        plans = self.browser.find_elements_by_class_name('plans')
+        print(plans[0].get_attribute('placeholder'))
+        # print(plans[0])
+        # assert ['Day', 'Month', '6-month', '12-month'] in plans
         # User clicks the plan they want (Daily, Monthly, 6-month, 12-month)
 
 

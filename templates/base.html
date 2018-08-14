@@ -10,8 +10,11 @@
         <button>Home</button>
     </a>
     {% if user.is_authenticated %}
+        <a href="{% url 'charge' %}">
+            <button>Charge</button>
+        </a>
         <a href="{% url 'password_change' %}">
-            <button>{{ user.email }}</button>
+            <button>Account</button>
         </a>
         <a href="{% url 'logout' %}">
             <button>Logout</button>
@@ -27,12 +30,14 @@
 {% endblock %}
 
 {% block content %}
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
+    {% if user.is_staff %}
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
     {% endif %}
 {% endblock %}
 </html>
