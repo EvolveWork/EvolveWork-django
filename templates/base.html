@@ -30,7 +30,6 @@
 {% endblock %}
 
 {% block content %}
-    {% if user.is_staff %}
         {% if messages %}
             <ul class="messages">
                 {% for message in messages %}
@@ -38,6 +37,5 @@
                 {% endfor %}
             </ul>
         {% endif %}
-    {% endif %}
 {% endblock %}
 </html>

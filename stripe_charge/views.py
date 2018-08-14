@@ -18,14 +18,10 @@ def checkout(request):
     if request.method == "POST":
         payee = request.user
         try:
-
-            # Solution to not creating a new customer everytime:
-            # Do a customer.retrieve on the payee's stripeId in the try.
             customer = stripe.Customer.retrieve(payee.stripeId)
             customer.plan = 'plan_DJBWu9zs91csmJ'
             customer.card = request.POST.get("stripeToken")
             customer.save()
-            # Exception could be made to do what's going on currently.
 
         except stripe.error.InvalidRequestError as error:
 
@@ -52,10 +48,12 @@ def checkout(request):
             return redirect('charge_success')
 
 
+@login_required()
 def charge_success(request):
     return render(request, 'charge_success.html', {})
 
 
+@login_required()
 def cancel_subscription(request):
     try:
         customer = stripe.Customer.retrieve(request.user.stripeId)
@@ -63,6 +61,5 @@ def cancel_subscription(request):
         subscription = stripe.Subscription.retrieve(subscription_id)
         subscription.delete(at_period_end=True)
     except Exception as e:
-        messages.error(request, e)
-
+        messages.error(request, "Looks like something went wrong. Are you sure you have a subscription set up?")
     return render(request, 'home.html', {})
