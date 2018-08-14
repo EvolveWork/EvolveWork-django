@@ -21,19 +21,28 @@ def checkout(request):
 
             # Solution to not creating a new customer everytime:
             # Do a customer.retrieve on the payee's stripeId in the try.
+            customer = stripe.Customer.retrieve(payee.stripeId)
+            customer.plan = 'plan_DJBWu9zs91csmJ'
+            customer.card = request.POST.get("stripeToken")
+            customer.save()
             # Exception could be made to do what's going on currently.
+
+        except stripe.error.InvalidRequestError as error:
 
             customer = stripe.Customer.create(
                 email=payee.email,
                 plan='plan_DJBWu9zs91csmJ',
                 card=request.POST.get("stripeToken")
             )
+
             payee.stripeId = customer.id
             payee.stripeBillingAddressLine1 = request.POST.get('stripeBillingAddressLine1')
             payee.zipCode = request.POST.get('stripeBillingAddressZip')
             payee.billingAddressState = request.POST.get('stripeBillingAddressState')
             payee.billingAddressCity = request.POST.get('stripeBillingAddressCity')
             payee.billingAddressCountry = request.POST.get('stripeBillingAddressCountry')
+            payee.save()
+            return redirect('charge_success')
 
         except stripe.error.CardError as ce:
             return False, ce
