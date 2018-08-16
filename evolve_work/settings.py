@@ -31,22 +31,22 @@ ALLOWED_HOSTS = []
 
 EXTERNAL_APPS = [
     # Django core apps
-    # 'django_admin_bootstrapped',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    # billing
-    'user_authentication',
-    'djstripe',
 ]
 
-INTERNAL_APPS = []
+INTERNAL_APPS = [
+    'user_authentication',
+    'stripe_charge',
+]
 
 INSTALLED_APPS = EXTERNAL_APPS + INTERNAL_APPS
+
+AUTH_USER_MODEL = 'user_authentication.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -63,7 +63,7 @@ ROOT_URLCONF = 'evolve_work.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'],
+        'DIRS': ['templates', 'templates/registration', 'templates/stripe_charge'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -124,30 +124,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+
 STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_LIVE_PUBLIC_KEY")
 STRIPE_SECRET_KEY = os.environ.get("STRIPE_LIVE_SECRET_KEY")
 STRIPE_TEST_PUBLIC_KEY = os.environ.get("STRIPE_TEST_PUBLIC_KEY")
 STRIPE_TEST_SECRET_KEY = os.environ.get("STRIPE_TEST_SECRET_KEY")
 STRIPE_LIVE_MODE = False  # Change to True in production
-
-DJSTRIPE_PLANS = {
-    "monthly": {
-        "stripe_plan_id": "pro-monthly",
-        "name": "Web App Pro ($25/month)",
-        "description": "The monthly subscription plan to WebApp",
-        "price": 2500,  # $25.00
-        "currency": "usd",
-        "interval": "month"
-    },
-    "yearly": {
-        "stripe_plan_id": "pro-yearly",
-        "name": "Web App Pro ($199/year)",
-        "description": "The annual subscription plan to WebApp",
-        "price": 19900,  # $199.00
-        "currency": "usd",
-        "interval": "year"
-    }
-}
 
 # For email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -159,3 +141,5 @@ EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 LOGIN_REDIRECT_URL = '/'
+
+

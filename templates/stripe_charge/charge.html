@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+    <form action="{% url 'checkout' %}" method="POST">{% csrf_token %}
+        <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                data-key="{{ stripe_key }}"
+                data-amount="2000"
+                data-name="Evolve Coworking"
+                data-description="Recurring payment to gain access to the coworking space."
+                data-currency="usd"
+                data-zip-code="true"
+                data-locale="auto"
+                data-billing-address="true">
+{#                data-image="Link to your logo"#}
+        </script>
+    </form>
+{% endblock %}

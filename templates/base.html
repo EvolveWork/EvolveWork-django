@@ -1,17 +1,41 @@
+<html>
+{% block head %}
+    <title>
+        evolve work
+    </title>
+{% endblock %}
+
 {% block navigation %}
+    <a href="{% url 'home' %}">
+        <button>Home</button>
+    </a>
     {% if user.is_authenticated %}
+        <a href="{% url 'charge' %}">
+            <button>Charge</button>
+        </a>
+        <a href="{% url 'password_change' %}">
+            <button>Account</button>
+        </a>
         <a href="{% url 'logout' %}">
             <button>Logout</button>
         </a>
     {% else %}
-        <a href="{% url 'signup' %}">
-            <button>Sign Up</button>
-        </a>
         <a href="{% url 'login' %}">
             <button>Login</button>
+        </a>
+        <a href="{% url 'signup' %}">
+            <button>Sign Up</button>
         </a>
     {% endif %}
 {% endblock %}
 
 {% block content %}
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
 {% endblock %}
+</html>
