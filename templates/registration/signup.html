@@ -1,21 +1,37 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>Sign up</h2>
-    <form method="post">
-        {% csrf_token %}
-        {% for field in form %}
-            <p>
-                {{ field.label_tag }}<br>
-                {{ field }}
-                {% if field.help_text %}
-                    <small style="display: none">{{ field.help_text }}</small>
-                {% endif %}
-                {% for error in field.errors %}
-                    <p style="color: red">{{ error }}</p>
+    <article class="article">
+        <div class="wrapper">
+
+            <div class="logo">
+                <img src="http://AtomicKotlin.com/images/AtomicKotlinBanner.png">
+            </div>
+
+            <h1 style="border-bottom: 3px solid #18ADFB;">Sign Up </h1>
+
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="fieldWrapper" style="border: 1px black;">
+                    <p>
+                        {{ field.label_tag }}<br>
+                        {{ field }}
+                        {% if field.help_text %}
+                            <small style="display: none">{{ field.help_text }}</small>
+                        {% endif %}
+                        {% for error in field.errors %}
+                            <p style="color: red">{{ error }}</p>
+                        {% endfor %}
+                    </p>
+                    </div>
                 {% endfor %}
-            </p>
-        {% endfor %}
-        <button type="submit">Sign up</button>
-    </form>
+                <button type="submit">Sign up</button>
+            </form>
+            <aside class="copyright" role="note">
+            </aside>
+        </div>
+    </article>
+    </main>
+
 {% endblock %}

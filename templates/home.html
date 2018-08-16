@@ -1,4 +1,51 @@
 {% extends 'base.html' %}
 {% block content %}
-    {{ block.super }}
+
+        <article class="article">
+            <div class="wrapper">
+
+                <div class="logo">
+                    <img src="http://AtomicKotlin.com/images/AtomicKotlinBanner.png">
+                </div>
+
+                <h1 style="border-bottom: 3px solid #18ADFB;">About </h1>
+
+                <p><strong>Bruce Eckel</strong> is the author of the multi-award-winning <em>Thinking in Java</em> and
+                    <em>Thinking in C++</em> and other books. He has inhabited the programming planet for
+                    over 30 years: writing, giving lectures and seminars, and consulting. You can
+                    find out more at the site of his company,
+                    <a href="http://mindviewllc.com/" target="_blank">MindView</a>.</p>
+
+                <p><strong>Svetlana Isakova</strong> began as a member of the Kotlin compiler team, and is now a
+                    developer advocate for JetBrains. She teaches Kotlin and speaks at conferences
+                    worldwide, and is coauthor of the book <em>Kotlin in Action</em>.</p>
+
+                <p>Questions? Email Mindview <a href="mailto:mindviewinc@gmail.com">mindviewinc@gmail.com</a></p>
+
+                <ul>
+                    <li><p>This is a statically-generated site, and no cookies or other records are
+                        captured here. If you wish to be informed of future activities, you can sign
+                        up for the newsletter (to be added).</p></li>
+
+                    <li><p>Site built with
+                        <a href="https://www.gohugo.io" target="_blank">Hugo</a>, using a theme derived from
+                        <a href="http://github.com/digitalcraftsman/hugo-material-docs" target="_blank">Material</a>.
+                    </p></li>
+
+                    <li><p>Graphics by <a href="http://www.Will-Harris.com">Daniel Will-Harris</a></p></li>
+                </ul>
+                <aside class="copyright" role="note">
+                </aside>
+            </div>
+        </article>
+        <div class="results" role="status" aria-live="polite">
+            <div class="scrollable">
+                <div class="wrapper">
+                    <div class="meta"></div>
+                    <div class="list"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
 {% endblock %}
