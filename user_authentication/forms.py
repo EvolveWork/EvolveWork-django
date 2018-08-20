@@ -13,7 +13,7 @@ class SignupForm(UserCreationForm):
     class Meta:
         model = User
         # fields = ('email', 'full_name', 'stripeBillingAddressLine1', 'zipCode', 'billingAddressState', 'billingAddressCity', 'billingAddressCountry', 'stripeId', 'password1', 'password2')
-        fields = ( 'email', 'full_name', 'password1', 'password2')
+        fields = ('email', 'full_name', 'password1', 'password2')
 
 
 class UserAdminCreationForm(forms.ModelForm):

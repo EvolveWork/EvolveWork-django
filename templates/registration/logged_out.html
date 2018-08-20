@@ -1,2 +1,16 @@
 {% extends 'base.html' %}
-...
+{% load static %}
+
+{% block content %}
+<article class="article">
+    <div class="wrapper">
+
+        <div class="logo">
+            <img src="{% static 'banner_screenshot.png' %}">
+        </div>
+
+        <h1 style="border-bottom: 3px solid #FD8224; color: #FD8224; margin-bottom: 10px;">You're now logged out. </h1>
+    </div>
+
+</article>
+{% endblock %}
