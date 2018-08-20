@@ -1,13 +1,14 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
         <article class="article">
             <div class="wrapper">
 
                 <div class="logo">
-                    <img src="http://AtomicKotlin.com/images/AtomicKotlinBanner.png">
-                </div>
+                <img src="{% static 'banner_screenshot.png' %}">
+            </div>
 
-                <h1 style="border-bottom: 3px solid #18ADFB;">Login </h1>
+            <h1 style="border-bottom: 3px solid #FD8224; color: #FD8224; margin-bottom: 10px;">Login </h1>
 
                 <p><strong> If you have not signed up, please click here: <a href="{% url 'signup' %}" target="_blank">Sign Up</a>.</strong></p>
 
@@ -22,10 +23,19 @@
                             <td>{{ form.password.label_tag }}</td>
                             <td>{{ form.password }}</td>
                         </tr>
+                        <tr>
+                            <td>
+                                <button type="submit">Login</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <a href="{% url 'password_reset' %}">Lost password?</a>
+                            </td>
+                        </tr>
                     </table>
-                    <input type="submit" value="login" id="login"/>
                 </form>
-                <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+                <p></p>
                 <aside class="copyright" role="note">
                 </aside>
             </div>

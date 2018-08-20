@@ -1,15 +1,19 @@
+import stripe
 from django.contrib import messages
 from django.contrib.auth import login, get_user_model
 from django.shortcuts import render, redirect
 
+from evolve_work import settings
 from .forms import SignupForm
 
 User = get_user_model()
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 def home_page_view(request, notification=None):
     context = {
-        'notification': notification
+        'notification': notification,
+        'stripe_key': settings.STRIPE_TEST_PUBLIC_KEY
     }
     return render(request, 'home.html', context)
 

@@ -1,32 +1,138 @@
 {% extends 'base.html' %}
-{##}
-{#{% block content %}#}
-{#    {% if form.errors %}#}
-{#        <p>Form error.</p>#}
-{#    {% endif %}#}
-{#    <form method="post"> {% csrf_token %}#}
-{#        {{ form }}#}
-{#        <input type="submit" value="register" class="btn btn-default"/>#}
-{#    </form>#}
-{#{% endblock %}#}
-{##}
+{% load static %}
 
 {% block content %}
-    <h2>Sign up</h2>
-    <form method="post">
-        {% csrf_token %}
-        {% for field in form %}
-            <p>
-                {{ field.label_tag }}<br>
-                {{ field }}
-                {% if field.help_text %}
-                    <small style="display: none">{{ field.help_text }}</small>
-                {% endif %}
-                {% for error in field.errors %}
-                    <p style="color: red">{{ error }}</p>
-                {% endfor %}
-            </p>
-        {% endfor %}
-        <button type="submit">Sign up</button>
-    </form>
+    <article class="article">
+        <div class="wrapper">
+            <div class="logo">
+                <img src="http://AtomicKotlin.com/images/AtomicKotlinBanner.png">
+            </div>
+            <h1 style="border-bottom: 3px solid #18ADFB;">Sign up </h1>
+            {{ form.non_field_errors }}
+            {{ form.field_errors }}
+            <form id='register_and_checkout_form' method="post" action="{% url 'register_and_checkout' %}">
+                {% csrf_token %}
+                <noscript>
+                    &lt;p&gt;
+                    This form requires Javascript to work!
+                    &lt;/p&gt;
+                </noscript>
+                <table>
+                    <tr>
+                        <td width="30%">{{ form.email.label_tag }}</td>
+                        <td width="70%">{{ form.email }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.full_name.label_tag }}</td>
+                        <td>{{ form.full_name }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.password1.label_tag }}</td>
+                        <td>{{ form.password1 }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.password2.label_tag }}</td>
+                        <td>{{ form.password2 }}</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="card-element">
+                                Credit or debit card
+                            </label>
+                        </td>
+                        <td>
+                            <div id="card-element">
+                                <!-- A Stripe Element will be inserted here. -->
+                            </div>
+                        </td>
+                        <td>
+                            <!-- Used to display form errors. -->
+                            <div id="card-errors" role="alert"></div>
+                        </td>
+                    </tr>
+                </table>
+
+                <button>Submit Payment</button>
+
+                {#                <table>#}
+                {#                    <tr>#}
+                {#                        <td>{{ form.email.label_tag }}</td>#}
+                {#                        <td>{{ form.email }}</td>#}
+                {#                    </tr>#}
+                {#                    <tr>#}
+                {#                        <td>{{ form.full_name.label_tag }}</td>#}
+                {#                        <td>{{ form.full_name }}</td>#}
+                {#                    </tr>#}
+                {#                    <tr>#}
+                {#                        <td>{{ form.password1.label_tag }}</td>#}
+                {#                        <td>{{ form.password1 }}</td>#}
+                {#                    </tr>#}
+                {#                    <tr>#}
+                {#                        <td>{{ form.password2.label_tag }}</td>#}
+                {#                        <td>{{ form.password2 }}</td>#}
+                {#                    </tr>#}
+                {#                    <tr>#}
+                {#                        <td><label for="id_stripeBillingAddressLine1">Billing Address:</label></td>#}
+                {#                        <td>{{ form.stripeBillingAddressLine1 }}</td>#}
+                {#                    </tr>#}
+                {#                    <tr>#}
+                {#                        <td><label for="id_zipCode">Zip Code:</label></td>#}
+                {#                        <td>{{ form.zipCode }}</td>#}
+                {#                    </tr>#}
+                {#                    <tr>#}
+                {#                        <td><label for="id_billingAddressState">State:</label></td>#}
+                {#                        <td>{{ form.billingAddressState }}</td>#}
+                {#                    </tr>#}
+                {#                    <tr>#}
+                {#                        <td><label for="id_billingAddressCity">City:</label></td>#}
+                {#                        <td>{{ form.billingAddressCity }}</td>#}
+                {#                    </tr>#}
+                {#                    <tr>#}
+                {#                        <td><label for="id_billingAddressCountry">Country:</label></td>#}
+                {#                        <td>{{ form.billingAddressCountry }}</td>#}
+                {#                    </tr>#}
+                {#                    {{ form.stripeId.as_hidden }}#}
+                {#                    <tr>#}
+                {#                        <td><label for='card-credit_card_number'>Credit or debit card: </label></td>#}
+                {#                        <td><input class="field" id="credit_card_number" type="text"></td>#}
+                {#                    </tr>#}
+                {#                    <tr>#}
+                {#                        <td><label for='security_code'>Security Code (CVC): </label></td>#}
+                {#                        <td><input class="field" id="security_code" type="text"></td>#}
+                {#                    </tr>#}
+                {#                    <tr>#}
+                {#                        <td><label for='expiration_date'>Expiration Date: </label></td>#}
+                {#                        <td>#}
+                {#                            <select class="small" id="expiration_month">#}
+                {#                                {% for month in months %}#}
+                {#                                    <option value="{{ month }}">{{ month }}</option>#}
+                {#                                {% endfor %}#}
+                {#                            </select>#}
+                {#                            <select class="small" id="expiration_year">#}
+                {#                                {% for year in years %}#}
+                {#                                    <option value="{{ year }}">{{ year }}</option>#}
+                {#                                {% endfor %}#}
+                {#                            </select>#}
+                {#                        </td>#}
+                {#                    </tr>#}
+                {#                    <tr>#}
+                {#                        <td></td>#}
+                {#                        <td><input class='btn btn-primary' id='user_submit' type="submit"/></td>#}
+                {#                    </tr>#}
+                {#                </table>#}
+            </form>
+            <aside class="copyright" role="note"></aside>
+        </div>
+    </article>
+    </main>
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+    {#    <script type="text/javascript">#}
+    {#        var stripe = Stripe('{{ publishable_api_key }}');#}
+    {#        var elements = stripe.elements();#}
+    {#        var card = elements.create('card');#}
+    {#        card.mount('#card-element');#}
+    {#    </script>#}
 {% endblock %}

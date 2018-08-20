@@ -1,32 +1,39 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
     <article class="article">
         <div class="wrapper">
 
             <div class="logo">
-                <img src="http://AtomicKotlin.com/images/AtomicKotlinBanner.png">
+                <img src="{% static 'banner_screenshot.png' %}">
             </div>
 
-            <h1 style="border-bottom: 3px solid #18ADFB;">Sign Up </h1>
+            <h1 style="border-bottom: 3px solid #FD8224; color: #FD8224; margin-bottom: 10px;">Sign Up </h1>
 
             <form method="post">
                 {% csrf_token %}
-                {% for field in form %}
-                    <div class="fieldWrapper" style="border: 1px black;">
-                    <p>
-                        {{ field.label_tag }}<br>
-                        {{ field }}
-                        {% if field.help_text %}
-                            <small style="display: none">{{ field.help_text }}</small>
-                        {% endif %}
-                        {% for error in field.errors %}
-                            <p style="color: red">{{ error }}</p>
-                        {% endfor %}
-                    </p>
-                    </div>
-                {% endfor %}
-                <button type="submit">Sign up</button>
+                <table>
+                    {% for field in form %}
+                        <div class="fieldWrapper" style="border: 1px black;">
+                            <tr>
+                                <td>{{ field.label_tag }}</td>
+                                <td>{{ field }}</td>
+                                {% if field.help_text %}
+                                    <small style="display: none">{{ field.help_text }}</small>
+                                {% endif %}
+                                {% for error in field.errors %}
+                                    <p style="color: red">{{ error }}</p>
+                                {% endfor %}
+                            </tr>
+                        </div>
+                    {% endfor %}
+                    <tr>
+                        <td>
+                            <button type="submit">Sign up</button>
+                        </td>
+                    </tr>
+                </table>
             </form>
             <aside class="copyright" role="note">
             </aside>
