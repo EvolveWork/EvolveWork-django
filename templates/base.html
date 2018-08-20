@@ -129,7 +129,7 @@
                                 <li><a title="Evolve Coworking" href="{% url 'home' %}">Home</a></li>
                                 {% if user.is_authenticated %}
                                     <li><a title="Charge" href="{% url 'charge' %}">Charge</a></li>
-                                    <li><a title="Account" href="{% url 'password_change' %}">Account</a></li>
+                                    <li><a title="Account" href="{% url 'account' %}">Account</a></li>
                                     <li><a title="Logout" href="{% url 'logout' %}">Logout</a></li>
                                 {% else %}
                                     <li><a title="Login" href="{% url 'login' %}">Login</a></li>

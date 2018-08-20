@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <article class="article">
+        <div class="wrapper">
+            <div class="logo">
+                <img src="{% static 'banner_screenshot.png' %}">
+            </div>
+
+            <h1 style="border-bottom: 3px solid #FD8224; color: #FD8224; margin-bottom: 10px;">Account Management: </h1>
+
+            <table>
+                <tr>
+                    <td>
+                        <a title="Change Password" href="{% url 'password_change' %}">Change Password</a>
+                    </td>
+                    <td></td>
+                    <td>
+                        <a title="Cancel Subscription" href="{% url 'cancel_subscription' %}">Cancel Subscription</a>
+                    </td>
+                </tr>
+            </table>
+            <aside class="copyright" role="note"></aside>
+        </div>
+    </article>
+    </main>
+{% endblock %}

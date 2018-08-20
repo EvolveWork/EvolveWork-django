@@ -89,4 +89,4 @@ def cancel_subscription(request):
         subscription.delete(at_period_end=True)
     except Exception as e:
         messages.error(request, "Looks like something went wrong. Are you sure you have a subscription set up?")
-    return render(request, 'home.html', {})
+    return render(request, 'charge_cancel.html', {})

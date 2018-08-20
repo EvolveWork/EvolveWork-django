@@ -30,3 +30,7 @@ def signup(request):
     else:
         form = SignupForm()
     return render(request, 'signup.html', {'form': form})
+
+
+def account(request):
+    return render(request, 'account.html', {})
