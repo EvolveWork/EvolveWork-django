@@ -13,9 +13,13 @@
             <table>
                 <tr>
                     <td>
+                        Your subscription will be renewed: <strong>{{ current_period_end }}</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
                         <a title="Change Password" href="{% url 'password_change' %}">Change Password</a>
                     </td>
-                    <td></td>
                     <td>
                         <a title="Cancel Subscription" href="{% url 'cancel_subscription' %}">Cancel Subscription</a>
                     </td>

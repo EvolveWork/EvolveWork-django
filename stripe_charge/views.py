@@ -55,6 +55,7 @@ def checkout(request):
             #     customer.card = request.POST.get("stripeToken")
             #     customer.save()
             # except stripe.error.InvalidRequestError as error:
+
             customer = stripe.Customer.create(
                 email=payee.email,
                 plan='plan_DJBWu9zs91csmJ',
@@ -66,8 +67,6 @@ def checkout(request):
             payee.billingAddressState = request.POST.get('stripeBillingAddressState')
             payee.billingAddressCity = request.POST.get('stripeBillingAddressCity')
             payee.billingAddressCountry = request.POST.get('stripeBillingAddressCountry')
-            # payee.save()
-            # return redirect('charge_success')
         except stripe.error.CardError as ce:
             return False, ce
         else:
