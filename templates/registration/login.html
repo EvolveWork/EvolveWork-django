@@ -1,18 +1,45 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
-    <form method="post" action="{% url 'login' %}">
-        {% csrf_token %}
-        <table>
-            <tr>
-                <td>{{ form.username.label_tag }}</td>
-                <td>{{ form.username }}</td>
-            </tr>
-            <tr>
-                <td>{{ form.password.label_tag }}</td>
-                <td>{{ form.password }}</td>
-            </tr>
-        </table>
-        <input type="submit" value="login" class="login"/>
-    </form>
-    <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+        <article class="article">
+            <div class="wrapper">
+
+                <div class="logo">
+                <img src="{% static 'banner_screenshot.png' %}">
+            </div>
+
+            <h1 style="border-bottom: 3px solid #FD8224; color: #FD8224; margin-bottom: 10px;">Login </h1>
+
+                <p><strong> If you have not signed up, please click here: <a href="{% url 'signup' %}" target="_blank">Sign Up</a>.</strong></p>
+
+                <form method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <table>
+                        <tr>
+                            <td>{{ form.username.label_tag }}</td>
+                            <td>{{ form.username }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ form.password.label_tag }}</td>
+                            <td>{{ form.password }}</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button type="submit">Login</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <a href="{% url 'password_reset' %}">Lost password?</a>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+                <p></p>
+                <aside class="copyright" role="note">
+                </aside>
+            </div>
+        </article>
+    </main>
+
 {% endblock %}
