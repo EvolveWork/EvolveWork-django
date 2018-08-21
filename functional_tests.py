@@ -48,12 +48,12 @@ class UserTestsWhileLoggedOut(unittest.TestCase):
         full_name_input.send_keys('test name')
         password1_input.send_keys('testing_test_pw')
         password2_input.send_keys('testing_test_pw')
-        submit_signup_button.send_keys(Keys.ENTER)
-        time.sleep(1)
 
         # User is saved to the database
-        user = User.objects.all().filter(email='testoroony@gmail.com')
-        self.assertTrue(user.exists())
+        submit_signup_button.send_keys(Keys.ENTER)
+        time.sleep(1)
+        user = User.objects.get(email='testoroony@gmail.com')
+        self.assertEqual(user.email, 'testoroony@gmail.com')
         user.delete()
 
     # def test_user_login(self):
