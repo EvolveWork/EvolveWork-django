@@ -1,10 +1,19 @@
 import os
-
-from selenium import webdriver
+import time
+import django
 import unittest
 
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 
-class UserTests(unittest.TestCase):
+# django.setup() is needed for scripts not served over HTTPS or that weren't ran through manage.py
+# in order to access user_authentication.models
+django.setup()
+
+from user_authentication.models import User
+
+
+class UserTestsWhileLoggedOut(unittest.TestCase):
 
     def setUp(self):
         self.browser = webdriver.Chrome(os.environ.get('CHROMEDRIVER'))
@@ -16,27 +25,47 @@ class UserTests(unittest.TestCase):
         # User goes to site to sign up for a payment plan
         self.browser.get('http://127.0.0.1:8000/')
 
-        # User sees evolve work in title
-        assert 'evolve work' in self.browser.title
+        # User sees proper title
+        self.assertIn('Evolve Coworking', self.browser.title)
 
-        # Page loads with plans
-        plans = self.browser.find_elements_by_class_name('plans')
-        print(plans[0].get_attribute('placeholder'))
-        # print(plans[0])
-        # assert ['Day', 'Month', '6-month', '12-month'] in plans
-        # User clicks the plan they want (Daily, Monthly, 6-month, 12-month)
+        # Page loads with navigation options
+        navigation_while_logged_out = self.browser.find_elements_by_class_name('navigation')
+        self.assertEqual(len(navigation_while_logged_out), 3)
 
+    def test_user_signup(self):
+        # User loads sign up page
+        self.browser.get('http://127.0.0.1:8000/signup/')
 
-# Plan is loaded - 'Pay with card' represents plan the User wants
+        # User sees four input fields
+        email_input = self.browser.find_element_by_id('id_email')
+        full_name_input = self.browser.find_element_by_id('id_full_name')
+        password1_input = self.browser.find_element_by_id('id_password1')
+        password2_input = self.browser.find_element_by_id('id_password2')
+        submit_signup_button = self.browser.find_element_by_id('submit_signup_button')
 
+        # User inputs email, full_name, password1, and password2
+        email_input.send_keys('testoroony@gmail.com')
+        full_name_input.send_keys('test name')
+        password1_input.send_keys('testing_test_pw')
+        password2_input.send_keys('testing_test_pw')
 
-# User inputs information that is then sent to Stripe.
+        # User is saved to the database
+        submit_signup_button.send_keys(Keys.ENTER)
+        time.sleep(1)
+        user = User.objects.get(email='testoroony@gmail.com')
+        self.assertEqual(user.email, 'testoroony@gmail.com')
+        user.delete()
 
+    # def test_user_login(self):
+    #     user = User.objects.all().filter(email='testoroony@gmail.com')
+    #     self.user.login()
+    #     # User is logged in
+    #     self.assertTrue()
 
-# Database stores information that Stripe reports (name, email, address, plan)
+        # Logged in view shows additional options - reset password, unsubscribe
 
+        self.fail('Finish the Logged Out tests.')
 
-#
 
 if __name__ == '__main__':
     unittest.main(warnings='ignore')

@@ -42,10 +42,10 @@
             }
         </style>
 
-        <link rel="stylesheet" href="http://AtomicKotlin.com/stylesheets/application.css">
-        <link rel="stylesheet" href="http://AtomicKotlin.com/stylesheets/temporary.css">
-        <link rel="stylesheet" href="http://AtomicKotlin.com/stylesheets/palettes.css">
-        <link rel="stylesheet" href="http://AtomicKotlin.com/stylesheets/highlight/highlight.css">
+        <link rel="stylesheet" href="{% static 'user_authentication/css/application.css' %}">
+        <link rel="stylesheet" href="{% static 'user_authentication/css/temporary.css' %}">
+        <link rel="stylesheet" href="{% static 'user_authentication/css/palettes.css' %}">
+        <link rel="stylesheet" href="{% static 'user_authentication/css/highlight/highlight.css' %}">
 
 
         <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ubuntu:400,700|Ubuntu&#43;Mono">
@@ -126,14 +126,14 @@
                     <div class="wrapper">
                         <div class="toc">
                             <ul>
-                                <li><a title="Evolve Coworking" href="{% url 'home' %}">Home</a></li>
+                                <li><a title="Evolve Coworking" class="navigation" href="{% url 'home' %}">Home</a></li>
                                 {% if user.is_authenticated %}
-                                    <li><a title="Charge" href="{% url 'charge' %}">Subscribe</a></li>
-                                    <li><a title="Account" href="{% url 'account' %}">Account</a></li>
-                                    <li><a title="Logout" href="{% url 'logout' %}">Logout</a></li>
+                                    <li><a title="Charge" class="navigation" href="{% url 'charge' %}">Subscribe</a></li>
+                                    <li><a title="Account" class="navigation" href="{% url 'account' %}">Account</a></li>
+                                    <li><a title="Logout" class="navigation" href="{% url 'logout' %}">Logout</a></li>
                                 {% else %}
-                                    <li><a title="Login" href="{% url 'login' %}">Login</a></li>
-                                    <li><a title="Sign Up" href="{% url 'signup' %}">Sign Up</a></li>
+                                    <li><a title="Login" class="navigation" href="{% url 'login' %}">Login</a></li>
+                                    <li><a title="Sign Up" class="navigation" href="{% url 'signup' %}">Sign Up</a></li>
                                 {% endif %}
                             </ul>
                         </div>
@@ -181,7 +181,7 @@
         var repo_id = '';
 
     </script>
-    <script src="http://AtomicKotlin.com/javascripts/application.js"></script>
+    <script src="{% static 'user_authentication/js/application.js' %}"></script>
     <script>
         /* Add headers to scrollspy */
         var headers = document.getElementsByTagName("h2");
