@@ -1,0 +1,24 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+certifi = "*"
+chardet = "*"
+django = "==2.0.7"
+django-appconf = "*"
+django-ipware = "*"
+idna = "*"
+jsonfield = "*"
+pytz = "*"
+requests = "*"
+selenium = "*"
+six = "*"
+stripe = "*"
+"urllib3" = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.6"
