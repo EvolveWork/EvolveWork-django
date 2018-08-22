@@ -80,15 +80,24 @@ class UserTestsWhileLoggedOutSelenium(unittest.TestCase):
 
 class UserTestsWhileLoggedOut(TestCase):
 
+    def test_charge_url_redirect(self):
+        response = self.client.get('/charge/')
+        self.assertEqual(response.status_code, 302)
+
     def test_account_url_redirect(self):
         response = self.client.get('/account/')
         self.assertEqual(response.status_code, 302)
 
+    def test_logout_url_redirect(self):
+        response = self.client.get('/logout/')
+        self.assertEqual(response.status_code, 302)
+
 
 class UserTestsWhileLoggedIn(TestCase):
-    def test_nav_change(self):
+    def setUp(self):
         self.client.login(email='test@gmail.com', password='testing_test_pw')
 
+    def test_nav_change(self):
         # User is logged in when homepage is loaded
         response = self.client.get('/')
 
@@ -101,14 +110,20 @@ class UserTestsWhileLoggedIn(TestCase):
                       response.content.decode())
 
     def test_signup_redirect(self):
-        self.client.login(email='test@gmail.com', password='testing_test_pw')
         response = self.client.get('/signup/')
         self.assertEqual(response.status_code, 302)
 
     def test_load_charge_page(self):
-        self.client.login(email='test@gmail.com', password='testing_test_pw')
+        response = self.client.get('/charge/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_charge_page_loads_stripe_js(self):
         response = self.client.get('/charge/')
         self.assertIn('src="https://checkout.stripe.com/checkout.js"', response.content.decode())
+
+    def test_load_account_page(self):
+        response = self.client.get('/account/')
+        self.assertEqual(response.status_code, 200)
 
 
 if __name__ == '__main__':

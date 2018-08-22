@@ -19,6 +19,12 @@ def home_page_view(request, notification=None):
     return render(request, 'home.html', context)
 
 
+def logout(request):
+    if request.user.is_authenticated:
+        return redirect('logout_success')
+    return redirect('home')
+
+
 def signup(request):
     if request.user.is_authenticated:
         return redirect('home')
