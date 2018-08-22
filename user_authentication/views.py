@@ -35,12 +35,13 @@ def signup(request):
     return render(request, 'signup.html', {'form': form})
 
 
-@login_required
 def account(request):
     user = request.user
-    if user.stripeId:
-        customer = stripe.Customer.retrieve(user.stripeId)
-        current_period_end = customer.subscriptions.get('data')[0].get('current_period_end')
-        timestamp = datetime.datetime.fromtimestamp(current_period_end)
-        return render(request, 'account.html', {'current_period_end': timestamp})
-    return render(request, 'account.html', {'current_period_end': 'N/A'})
+    if user.is_authenticated:
+        if user.stripeId:
+            customer = stripe.Customer.retrieve(user.stripeId)
+            current_period_end = customer.subscriptions.get('data')[0].get('current_period_end')
+            timestamp = datetime.datetime.fromtimestamp(current_period_end)
+            return render(request, 'account.html', {'current_period_end': timestamp})
+        return render(request, 'account.html', {'current_period_end': 'N/A'})
+    return redirect('login')

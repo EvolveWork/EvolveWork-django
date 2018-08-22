@@ -66,7 +66,7 @@ class UserTestsWhileLoggedIn(TestCase):
     def tearDown(self):
         self.browser.quit()
 
-    def test_nav_change_when_logged_in(self):
+    def test_nav_change(self):
         self.client.login(email='test@gmail.com', password='testing_test_pw')
 
         # User is logged in when homepage is loaded
@@ -79,6 +79,11 @@ class UserTestsWhileLoggedIn(TestCase):
                       response.content.decode())
         self.assertIn('<li><a title="Logout" class="navigation" href="/logout/">Logout</a></li>',
                       response.content.decode())
+
+    def test_signup_redirect(self):
+        self.client.login(email='test@gmail.com', password='testing_test_pw')
+        response = self.client.get('/signup/')
+        self.assertEqual(response.status_code, 302)
 
 
 
