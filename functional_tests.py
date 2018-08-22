@@ -81,8 +81,6 @@ class UserTestsWhileLoggedIn(TestCase):
                       response.content.decode())
 
 
-    # self.fail('Finish the Logged In tests.')
-
 
 if __name__ == '__main__':
     unittest.main(warnings='ignore')
