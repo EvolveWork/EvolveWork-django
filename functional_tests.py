@@ -1,13 +1,11 @@
 import os
 import time
-import django
 import unittest
 
-from django.contrib import auth
-from django.urls import reverse
+import django
+from django.test import TestCase, Client
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from django.test import TestCase, Client
 
 # django.setup() is needed for scripts not served over HTTPS or that weren't ran through manage.py
 # in order to access user_authentication.models
@@ -97,7 +95,7 @@ class UserTestsWhileLoggedIn(TestCase):
     def setUp(self):
         self.client.login(email='test@gmail.com', password='testing_test_pw')
 
-    def test_nav_change(self):
+    def test_navigation_options_changed(self):
         # User is logged in when homepage is loaded
         response = self.client.get('/')
 
