@@ -76,21 +76,6 @@ class UserTestsWhileLoggedOutSelenium(unittest.TestCase):
         self.assertNotEqual(self.browser.current_url, 'http://127.0.0.1:8000/login/')
 
 
-class UserTestsWhileLoggedOut(TestCase):
-
-    def test_charge_url_redirect(self):
-        response = self.client.get('/charge/')
-        self.assertEqual(response.status_code, 302)
-
-    def test_account_url_redirect(self):
-        response = self.client.get('/account/')
-        self.assertEqual(response.status_code, 302)
-
-    def test_logout_url_redirect(self):
-        response = self.client.get('/logout/')
-        self.assertEqual(response.status_code, 302)
-
-
 class UserTestsWhileLoggedIn(TestCase):
     def setUp(self):
         self.client.login(email='test@gmail.com', password='testing_test_pw')
@@ -106,22 +91,6 @@ class UserTestsWhileLoggedIn(TestCase):
                       response.content.decode())
         self.assertIn('<li><a title="Logout" class="navigation" href="/logout/">Logout</a></li>',
                       response.content.decode())
-
-    def test_signup_redirect(self):
-        response = self.client.get('/signup/')
-        self.assertEqual(response.status_code, 302)
-
-    def test_load_charge_page(self):
-        response = self.client.get('/charge/')
-        self.assertEqual(response.status_code, 200)
-
-    def test_load_account_page(self):
-        response = self.client.get('/account/')
-        self.assertEqual(response.status_code, 200)
-
-    def test_load_logout_page(self):
-        response = self.client.get('/logout/')
-        self.assertEqual(response.status_code, 200)
 
     def test_charge_page_loads_stripe_js(self):
         response = self.client.get('/charge/')

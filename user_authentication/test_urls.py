@@ -14,7 +14,7 @@ class TestUserAuthenticationUrls(TestCase):
         )
 
     def test_uses_home_template(self):
-        response = self.client.get('/')
+        response = self.client.get(reverse('home'))
         self.assertTemplateUsed(response, 'home.html')
 
     def test_default_url_status_code_is_200(self):
@@ -29,10 +29,6 @@ class TestUserAuthenticationUrls(TestCase):
         response = self.client.get(reverse('login'))
         self.assertEqual(response.status_code, 200)
 
-    def test_logout_url_status_code_is_200(self):
-        response = self.client.get(reverse('logout'))
-        self.assertEqual(response.status_code, 200)
-
     def test_password_change_url_status_code_is_200(self):
         self.client.force_login(self.user)
         response = self.client.get(reverse('password_change'))
@@ -42,7 +38,19 @@ class TestUserAuthenticationUrls(TestCase):
         self.client.force_login(self.user)
         response = self.client.get(reverse('password_change_done'))
         self.assertEqual(response.status_code, 200)
-    #
+
+    def test_logout_url_status_code_is_302(self):
+        response = self.client.get(reverse('logout'))
+        self.assertEqual(response.status_code, 302)
+
+    def test_account_url_status_code_is_302(self):
+        response = self.client.get(reverse('account'))
+        self.assertEqual(response.status_code, 302)
+
+    def test_charge_url_status_code_is_302(self):
+        response = self.client.get(reverse('charge'))
+        self.assertEqual(response.status_code, 302)
+
     # def test_password_reset_url_status_code_is_200(self):
     #     response = self.client.get(reverse('password_reset'))
     #     self.assertEqual(response.status_code, 200)
