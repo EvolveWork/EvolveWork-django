@@ -74,7 +74,8 @@ class UserTestsWhileLoggedOutSelenium(unittest.TestCase):
         password_input.send_keys('testing_test_pw')
         submit_login_button.send_keys(Keys.ENTER)
 
-        self.fail('Still need to test that user is logged in after submitting button')
+        # Testing on redirect after logging in.
+        self.assertNotEqual(self.browser.current_url, 'http://127.0.0.1:8000/login/')
 
 
 class UserTestsWhileLoggedOut(TestCase):
