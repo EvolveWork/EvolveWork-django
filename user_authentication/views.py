@@ -14,7 +14,6 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 def home_page_view(request, notification=None):
     context = {
         'notification': notification,
-        # 'stripe_key': settings.STRIPE_TEST_PUBLIC_KEY
     }
     return render(request, 'home.html', context)
 
