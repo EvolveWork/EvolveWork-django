@@ -15,7 +15,7 @@ django.setup()
 from user_authentication.models import User
 
 
-class UserTestsWhileLoggedOut(unittest.TestCase):
+class UserTestsWhileLoggedOutSelenium(unittest.TestCase):
 
     def setUp(self):
         self.browser = webdriver.Chrome(os.environ.get('CHROMEDRIVER'))
@@ -59,13 +59,13 @@ class UserTestsWhileLoggedOut(unittest.TestCase):
         user.delete()
 
 
+class UserTestsWhileLoggedOut(TestCase):
+    def test_account_url_redirect(self):
+        response = self.client.get('/account/')
+        self.assertEqual(response.status_code, 302)
+
+
 class UserTestsWhileLoggedIn(TestCase):
-    def setUp(self):
-        self.browser = webdriver.Chrome(os.environ.get('CHROMEDRIVER'))
-
-    def tearDown(self):
-        self.browser.quit()
-
     def test_nav_change(self):
         self.client.login(email='test@gmail.com', password='testing_test_pw')
 
@@ -84,7 +84,6 @@ class UserTestsWhileLoggedIn(TestCase):
         self.client.login(email='test@gmail.com', password='testing_test_pw')
         response = self.client.get('/signup/')
         self.assertEqual(response.status_code, 302)
-
 
 
 if __name__ == '__main__':
