@@ -66,7 +66,7 @@ class UserTestsWhileLoggedIn(TestCase):
     def tearDown(self):
         self.browser.quit()
 
-    def test_site_load(self):
+    def test_nav_change_when_logged_in(self):
         self.client.login(email='test@gmail.com', password='testing_test_pw')
 
         # User is logged in when homepage is loaded
