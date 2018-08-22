@@ -9,10 +9,11 @@ from user_authentication.forms import SignupForm
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
-@login_required
 def charge_view(request):
-    context = {"stripe_key": settings.STRIPE_TEST_PUBLIC_KEY}
-    return render(request, "charge.html", context)
+    if request.user.is_authenticated:
+        context = {"stripe_key": settings.STRIPE_TEST_PUBLIC_KEY}
+        return render(request, "charge.html", context)
+    return redirect('home')
 
 
 def register_and_checkout(request):
@@ -45,33 +46,34 @@ def register_and_checkout(request):
     return render(request, 'registration.html', context)
 
 
-@login_required
 def checkout(request):
-    if request.method == 'POST':
-        payee = request.user
-        try:
-            #     customer = stripe.Customer.retrieve(payee.stripeId)
-            #     customer.plan = 'plan_DJBWu9zs91csmJ'
-            #     customer.card = request.POST.get("stripeToken")
-            #     customer.save()
-            # except stripe.error.InvalidRequestError as error:
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            payee = request.user
+            try:
+                #     customer = stripe.Customer.retrieve(payee.stripeId)
+                #     customer.plan = 'plan_DJBWu9zs91csmJ'
+                #     customer.card = request.POST.get("stripeToken")
+                #     customer.save()
+                # except stripe.error.InvalidRequestError as error:
 
-            customer = stripe.Customer.create(
-                email=payee.email,
-                plan='plan_DJBWu9zs91csmJ',
-                card=request.POST.get("stripeToken")
-            )
-            payee.stripeId = customer.id
-            payee.stripeBillingAddressLine1 = request.POST.get('stripeBillingAddressLine1')
-            payee.zipCode = request.POST.get('stripeBillingAddressZip')
-            payee.billingAddressState = request.POST.get('stripeBillingAddressState')
-            payee.billingAddressCity = request.POST.get('stripeBillingAddressCity')
-            payee.billingAddressCountry = request.POST.get('stripeBillingAddressCountry')
-        except stripe.error.CardError as ce:
-            return False, ce
-        else:
-            payee.save()
-            return redirect('charge_success')
+                customer = stripe.Customer.create(
+                    email=payee.email,
+                    plan='plan_DJBWu9zs91csmJ',
+                    card=request.POST.get("stripeToken")
+                )
+                payee.stripeId = customer.id
+                payee.stripeBillingAddressLine1 = request.POST.get('stripeBillingAddressLine1')
+                payee.zipCode = request.POST.get('stripeBillingAddressZip')
+                payee.billingAddressState = request.POST.get('stripeBillingAddressState')
+                payee.billingAddressCity = request.POST.get('stripeBillingAddressCity')
+                payee.billingAddressCountry = request.POST.get('stripeBillingAddressCountry')
+            except stripe.error.CardError as ce:
+                return False, ce
+            else:
+                payee.save()
+                return redirect('charge_success')
+    return redirect('home')
 
 
 @login_required()

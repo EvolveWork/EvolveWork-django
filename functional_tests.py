@@ -4,6 +4,7 @@ import django
 import unittest
 
 from django.contrib import auth
+from django.urls import reverse
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from django.test import TestCase, Client
@@ -19,6 +20,7 @@ class UserTestsWhileLoggedOutSelenium(unittest.TestCase):
 
     def setUp(self):
         self.browser = webdriver.Chrome(os.environ.get('CHROMEDRIVER'))
+        self.client = Client()
 
     def tearDown(self):
         self.browser.quit()
@@ -58,8 +60,25 @@ class UserTestsWhileLoggedOutSelenium(unittest.TestCase):
         self.assertEqual(user.email, 'testoroony@gmail.com')
         user.delete()
 
+    def test_user_login(self):
+        # User loads up login page
+        self.browser.get('http://127.0.0.1:8000/login/')
+
+        # User sees two input fields and a submit button
+        email_input = self.browser.find_element_by_id('id_username')
+        password_input = self.browser.find_element_by_id('id_password')
+        submit_login_button = self.browser.find_element_by_id('submit_login_button')
+
+        # User inputs login information
+        email_input.send_keys('test@gmail.com')
+        password_input.send_keys('testing_test_pw')
+        submit_login_button.send_keys(Keys.ENTER)
+
+        self.fail('Still need to test that user is logged in after submitting button')
+
 
 class UserTestsWhileLoggedOut(TestCase):
+
     def test_account_url_redirect(self):
         response = self.client.get('/account/')
         self.assertEqual(response.status_code, 302)
@@ -84,6 +103,11 @@ class UserTestsWhileLoggedIn(TestCase):
         self.client.login(email='test@gmail.com', password='testing_test_pw')
         response = self.client.get('/signup/')
         self.assertEqual(response.status_code, 302)
+
+    def test_load_charge_page(self):
+        self.client.login(email='test@gmail.com', password='testing_test_pw')
+        response = self.client.get('/charge/')
+        self.assertIn('src="https://checkout.stripe.com/checkout.js"', response.content.decode())
 
 
 if __name__ == '__main__':
