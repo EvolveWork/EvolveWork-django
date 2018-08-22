@@ -8,9 +8,9 @@ class TestUserAuthenticationUrls(TestCase):
 
     def setUp(self):
         self.user = User.objects.create_superuser(
-            email='test@gmail.com',
-            full_name='Cody Bontecou',
-            password='test'
+            email='anothertestoroony@gmail.com',
+            full_name='anothertest name',
+            password='testing_test_pw'
         )
 
     def test_uses_home_template(self):
@@ -42,19 +42,19 @@ class TestUserAuthenticationUrls(TestCase):
         self.client.force_login(self.user)
         response = self.client.get(reverse('password_change_done'))
         self.assertEqual(response.status_code, 200)
-
-    def test_password_reset_url_status_code_is_200(self):
-        response = self.client.get(reverse('password_reset'))
-        self.assertEqual(response.status_code, 200)
-
-    def test_password_reset_done_url_status_code_is_200(self):
-        response = self.client.get(reverse('password_reset_done'))
-        self.assertEqual(response.status_code, 200)
-
-    def test_password_reset_confirm_url_status_code_is_200(self):
-        response = self.client.get(reverse('password_reset_confirm', kwargs={'uidb64': 4, 'token': 4}))
-        self.assertEqual(response.status_code, 200)
-
-    def test_password_reset_complete_url_status_code_is_200(self):
-        response = self.client.get(reverse('password_reset_complete'))
-        self.assertEqual(response.status_code, 200)
+    #
+    # def test_password_reset_url_status_code_is_200(self):
+    #     response = self.client.get(reverse('password_reset'))
+    #     self.assertEqual(response.status_code, 200)
+    #
+    # def test_password_reset_done_url_status_code_is_200(self):
+    #     response = self.client.get(reverse('password_reset_done'))
+    #     self.assertEqual(response.status_code, 200)
+    #
+    # def test_password_reset_confirm_url_status_code_is_200(self):
+    #     response = self.client.get(reverse('password_reset_confirm', kwargs={'uidb64': 4, 'token': 4}))
+    #     self.assertEqual(response.status_code, 200)
+    #
+    # def test_password_reset_complete_url_status_code_is_200(self):
+    #     response = self.client.get(reverse('password_reset_complete'))
+    #     self.assertEqual(response.status_code, 200)

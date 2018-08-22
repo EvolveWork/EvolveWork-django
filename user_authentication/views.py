@@ -15,7 +15,7 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 def home_page_view(request, notification=None):
     context = {
         'notification': notification,
-        'stripe_key': settings.STRIPE_TEST_PUBLIC_KEY
+        # 'stripe_key': settings.STRIPE_TEST_PUBLIC_KEY
     }
     return render(request, 'home.html', context)
 
@@ -27,7 +27,6 @@ def signup(request):
             user = form.save(commit=False)
             user.save()
             login(request, user)
-            messages.add_message(request, messages.INFO, 'Account successfully created.')
             return redirect('home')
     else:
         form = SignupForm()

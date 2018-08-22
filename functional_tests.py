@@ -3,8 +3,10 @@ import time
 import django
 import unittest
 
+from django.contrib import auth
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from django.test import TestCase, Client
 
 # django.setup() is needed for scripts not served over HTTPS or that weren't ran through manage.py
 # in order to access user_authentication.models
@@ -56,15 +58,30 @@ class UserTestsWhileLoggedOut(unittest.TestCase):
         self.assertEqual(user.email, 'testoroony@gmail.com')
         user.delete()
 
-    # def test_user_login(self):
-    #     user = User.objects.all().filter(email='testoroony@gmail.com')
-    #     self.user.login()
-    #     # User is logged in
-    #     self.assertTrue()
 
-        # Logged in view shows additional options - reset password, unsubscribe
+class UserTestsWhileLoggedIn(TestCase):
+    def setUp(self):
+        self.browser = webdriver.Chrome(os.environ.get('CHROMEDRIVER'))
 
-        self.fail('Finish the Logged Out tests.')
+    def tearDown(self):
+        self.browser.quit()
+
+    def test_site_load(self):
+        self.client.login(email='test@gmail.com', password='testing_test_pw')
+
+        # User is logged in when homepage is loaded
+        response = self.client.get('/')
+
+        # User sees new navigation options
+        self.assertIn('<li><a title="Charge" class="navigation" href="/charge/">Subscribe</a></li>',
+                      response.content.decode())
+        self.assertIn('<li><a title="Account" class="navigation" href="/account/">Account</a></li>',
+                      response.content.decode())
+        self.assertIn('<li><a title="Logout" class="navigation" href="/logout/">Logout</a></li>',
+                      response.content.decode())
+
+
+    # self.fail('Finish the Logged In tests.')
 
 
 if __name__ == '__main__':
