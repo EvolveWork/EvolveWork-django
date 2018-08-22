@@ -21,7 +21,7 @@ def home_page_view(request, notification=None):
 
 def logout(request):
     if request.user.is_authenticated:
-        return redirect('logout_success')
+        return render(request, 'logout.html', {})
     return redirect('home')
 
 

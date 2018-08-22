@@ -115,13 +115,18 @@ class UserTestsWhileLoggedIn(TestCase):
         response = self.client.get('/charge/')
         self.assertEqual(response.status_code, 200)
 
+    def test_load_account_page(self):
+        response = self.client.get('/account/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_load_logout_page(self):
+        response = self.client.get('/logout/')
+        self.assertEqual(response.status_code, 200)
+
     def test_charge_page_loads_stripe_js(self):
         response = self.client.get('/charge/')
         self.assertIn('src="https://checkout.stripe.com/checkout.js"', response.content.decode())
 
-    def test_load_account_page(self):
-        response = self.client.get('/account/')
-        self.assertEqual(response.status_code, 200)
 
 
 if __name__ == '__main__':
