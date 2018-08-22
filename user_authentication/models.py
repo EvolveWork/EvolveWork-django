@@ -70,6 +70,8 @@ class User(AbstractBaseUser):
         return self.email
 
     def get_short_name(self):
+        if self.full_name.find(' '):
+            return self.full_name[:self.full_name.find(' ')]
         return self.email
 
     def has_perm(self, perm, obj=None):
