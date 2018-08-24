@@ -15,4 +15,19 @@ class TestChargeSuccessView(TestCase):
         self.assertTemplateUsed(response, 'charge_success.html')
 
 
+class TestCheckoutView(TestCase):
 
+    def setUp(self):
+        User.objects.create_user(email='test@gmail.com', full_name='testable full_name', password='testing_test_pw')
+        self.client.login(email='test@gmail.com', password='testing_test_pw')
+
+    def test_charge_checkout_view(self):
+        response = self.client.post(reverse('signup'), data={
+            'stripeToken':'4242424242424242',
+            'stripeId': 'cus_DSEvdbRV8IUQC1',
+            'stripeBillingAddressLine1': '518 a. North 14th st.',
+            'zipCode': '81230',
+            'stripeBillingAddressState': 'CO',
+            'stripeBillingAddressCity': 'Gunnison',
+            'stripeBillingAddressCountry': 'United States'
+        })
