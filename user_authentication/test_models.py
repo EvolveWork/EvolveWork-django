@@ -45,15 +45,15 @@ class TestUserModel(TestCase):
 class TestCustomUserManager(TestCase):
 
     def test_create_user_password_value_error(self):
-        self.assertRaises(ValueError, CustomUserManager.create_user, self, email='test@gmail.com',
+        self.assertRaises(ValueError, User.objects.create_user, email='test@gmail.com',
                           full_name='testable full_name')
 
     def test_create_user_email_value_error(self):
-        self.assertRaises(ValueError, CustomUserManager.create_user, self, email=None, full_name='testable full_name',
+        self.assertRaises(ValueError, User.objects.create_user, email=None, full_name='testable full_name',
                           password='testable_test_pw')
 
     def test_create_user_full_name_value_error(self):
-        self.assertRaises(ValueError, CustomUserManager.create_user, self, email='test@gmail.com', full_name=None,
+        self.assertRaises(ValueError, User.objects.create_user, email='test@gmail.com', full_name=None,
                           password='testable_test_pw')
 
     def test_create_staffuser(self):
