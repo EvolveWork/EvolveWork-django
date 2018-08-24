@@ -25,9 +25,12 @@ class TestUserModel(TestCase):
         entry = User(email='test@gmail.com', full_name='testablefull_name')
         self.assertEqual(entry.get_short_name(), 'test@gmail.com')
 
-    def test_has_perm_returns_true(self):
+    def test_has_perm(self):
         entry = User(email='test@gmail.com', full_name='testable full_name')
         self.assertTrue(entry.has_perm(perm='test'))
 
+    def test_has_module_perms(self):
+        entry = User(email='test@gmail.com', full_name='testable full_name')
+        self.assertTrue(entry.has_module_perms(app_label='test'))
 
 
