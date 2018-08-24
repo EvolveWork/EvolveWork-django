@@ -4,6 +4,7 @@ import stripe
 from django.contrib import messages
 from django.contrib.auth import login, get_user_model
 from django.shortcuts import render, redirect
+from stripe.error import InvalidRequestError
 
 from evolve_work import settings
 from .forms import SignupForm
@@ -48,8 +49,9 @@ def account(request):
                 customer = stripe.Customer.retrieve(user.stripeId)
                 current_period_end = customer.subscriptions.get('data')[0].get('current_period_end')
                 timestamp = datetime.datetime.fromtimestamp(current_period_end)
-                return render(request, 'account.html', {'current_period_end': timestamp})
-            except Exception:
+                print(timestamp)
+                return render(request, 'account.html', {'timestamp': timestamp})
+            except InvalidRequestError:
                 messages.warning(request, 'Looks like our payment processing portal is down. Please try again later.')
-        return render(request, 'account.html', {'current_period_end': 'N/A'})
+        return render(request, 'account.html', {'timestamp': 'N/A'})
     return redirect('login')
