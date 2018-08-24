@@ -37,4 +37,7 @@ class TestUserModel(TestCase):
         entry = User(email='test@gmail.com', full_name='testable full_name', staff=True)
         self.assertTrue(entry.is_staff)
 
+    def test_is_admin(self):
+        entry = User(email='test@gmail.com', full_name='testable full_name', admin=True)
+        self.assertTrue(entry.is_admin)
 
