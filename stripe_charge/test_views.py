@@ -15,3 +15,4 @@ class TestChargeSuccessView(TestCase):
         self.assertTemplateUsed(response, 'charge_success.html')
 
 
+

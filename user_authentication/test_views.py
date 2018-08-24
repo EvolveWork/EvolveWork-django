@@ -2,7 +2,6 @@ from django.test import TestCase
 from django.urls import reverse
 
 from .models import User
-from .forms import SignupForm
 
 
 class TestHomePageViews(TestCase):
@@ -38,8 +37,14 @@ class TestSignUpViewWhileLoggedIn(TestCase):
         self.assertEqual(response.status_code, 302)
 
 
-# class TestSignUpViewWhileLoggedOut(TestCase):
-#
-#     def test_signup_view_form(self):
-#         response = self.client.get(reverse('signup'))
-#         form = SignupForm(self.client.post(url, data))
+class TestSignUpViewWhileLoggedOut(TestCase):
+
+    def test_signup_view_form_completed(self):
+        response = self.client.post(reverse('signup'), data={
+            'email': 'test_signupform@gmail.com',
+            'full_name': 'test signupform',
+            'password1': 'testing_test_pw',
+            'password2': 'testing_test_pw'
+        })
+        self.assertRedirects(response, reverse('home'))
+
