@@ -17,6 +17,7 @@ selenium = "*"
 six = "*"
 stripe = "*"
 "urllib3" = "*"
+coverage = "*"
 
 [dev-packages]
 

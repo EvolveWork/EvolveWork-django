@@ -3,7 +3,7 @@ from django.test import TestCase
 from .forms import SignupForm
 
 
-class SignUpFormTest(TestCase):
+class TestSignUpForm(TestCase):
 
     def test_valid_data_in_SignUpForm(self):
         form = SignupForm({
@@ -20,4 +20,3 @@ class SignUpFormTest(TestCase):
     def test_blank_data_in_SignUpForm(self):
         form = SignupForm({})
         self.assertFalse(form.is_valid())
-

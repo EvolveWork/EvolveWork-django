@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.urls import reverse
 
 
-class HomePageViewTests(TestCase):
+class TestHomePageViews(TestCase):
 
     def test_home_page_uses_correct_template(self):
         response = self.client.get('')
