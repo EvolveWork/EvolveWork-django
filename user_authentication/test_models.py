@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from .models import User
+from .models import User, CustomUserManager
 
 
 class TestUserModel(TestCase):
@@ -41,3 +41,8 @@ class TestUserModel(TestCase):
         entry = User(email='test@gmail.com', full_name='testable full_name', admin=True)
         self.assertTrue(entry.is_admin)
 
+
+class TestCustomUserManager(TestCase):
+
+    def test_create_user_password_value_error(self):
+        self.assertRaises(ValueError, CustomUserManager.create_user, self, email='test@gmail.com', full_name='testable full_name')
