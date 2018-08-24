@@ -33,4 +33,8 @@ class TestUserModel(TestCase):
         entry = User(email='test@gmail.com', full_name='testable full_name')
         self.assertTrue(entry.has_module_perms(app_label='test'))
 
+    def test_is_staff(self):
+        entry = User(email='test@gmail.com', full_name='testable full_name', staff=True)
+        self.assertTrue(entry.is_staff)
+
 
