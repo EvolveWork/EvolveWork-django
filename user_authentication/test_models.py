@@ -45,4 +45,9 @@ class TestUserModel(TestCase):
 class TestCustomUserManager(TestCase):
 
     def test_create_user_password_value_error(self):
-        self.assertRaises(ValueError, CustomUserManager.create_user, self, email='test@gmail.com', full_name='testable full_name')
+        self.assertRaises(ValueError, CustomUserManager.create_user, self, email='test@gmail.com',
+                          full_name='testable full_name')
+
+    def test_create_user_email_value_error(self):
+        self.assertRaises(TypeError, CustomUserManager.create_user, self, full_name='testable full_name',
+                          password='testable_test_pw')
