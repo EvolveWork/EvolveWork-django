@@ -55,3 +55,8 @@ class TestCustomUserManager(TestCase):
     def test_create_user_full_name_value_error(self):
         self.assertRaises(ValueError, CustomUserManager.create_user, self, email='test@gmail.com', full_name=None,
                           password='testable_test_pw')
+
+    # def test_create_staffuser(self):
+    #     user = CustomUserManager.create_staffuser(CustomUserManager, email='test@gmail.com', full_name='testable full_name',
+    #                                               password='testable_test_pw')
+    #     self.assertTrue(user.is_staff)
