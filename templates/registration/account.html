@@ -13,7 +13,13 @@
             <table>
                 <tr>
                     <td>
-                        Your subscription will be renewed: <strong>{{ current_period_end }}</strong>
+                        Your subscription will be renewed: <strong>{{ current_period_end }}</strong>{% if messages %}
+                        <ul class="messages">
+                            {% for message in messages %}
+                                <li class="{{ message.tags }}">{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
                     </td>
                 </tr>
                 <tr>

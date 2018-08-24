@@ -19,7 +19,7 @@
 
         <meta property="og:url" content="http://AtomicKotlin.com/about/">
         <meta property="og:title" content="Learning Resources for the Kotlin Programming Language">
-{#        <meta property="og:image" content="http://AtomicKotlin.com/images/AtomicKotlin-circle.png">#}
+        {#        <meta property="og:image" content="http://AtomicKotlin.com/images/AtomicKotlin-circle.png">#}
         <meta name="apple-mobile-web-app-title" content="Learning Resources for the Kotlin Programming Language">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -110,37 +110,37 @@
 
 {% block navigation %}
     <main class="main">
-        <div class="drawer">
-            <nav aria-label="Navigation">
-                <a href="{% url 'home' %}" class="project">
-                    <div class="banner">
-                        <div class="logo">
-                            <img src="{% static 'evolve_logo.svg' %}">
-                        </div>
-                        <div class="name">
-                            <strong>Payment Processing</strong>
-                        </div>
+    <div class="drawer">
+        <nav aria-label="Navigation">
+            <a href="{% url 'home' %}" class="project">
+                <div class="banner">
+                    <div class="logo">
+                        <img src="{% static 'evolve_logo.svg' %}">
                     </div>
-                </a>
-                <div class="scrollable">
-                    <div class="wrapper">
-                        <div class="toc">
-                            <ul>
-                                <li><a title="Evolve Coworking" class="navigation" href="{% url 'home' %}">Home</a></li>
-                                {% if user.is_authenticated %}
-                                    <li><a title="Charge" class="navigation" href="{% url 'charge' %}">Subscribe</a></li>
-                                    <li><a title="Account" class="navigation" href="{% url 'account' %}">Account</a></li>
-                                    <li><a title="Logout" class="navigation" href="{% url 'logout' %}">Logout</a></li>
-                                {% else %}
-                                    <li><a title="Login" class="navigation" href="{% url 'login' %}">Login</a></li>
-                                    <li><a title="Sign Up" class="navigation" href="{% url 'signup' %}">Sign Up</a></li>
-                                {% endif %}
-                            </ul>
-                        </div>
+                    <div class="name">
+                        <strong>Payment Processing</strong>
                     </div>
                 </div>
-            </nav>
-        </div>
+            </a>
+            <div class="scrollable">
+                <div class="wrapper">
+                    <div class="toc">
+                        <ul>
+                            <li><a title="Evolve Coworking" class="navigation" href="{% url 'home' %}">Home</a></li>
+                            {% if user.is_authenticated %}
+                                <li><a title="Charge" class="navigation" href="{% url 'charge' %}">Subscribe</a></li>
+                                <li><a title="Account" class="navigation" href="{% url 'account' %}">Account</a></li>
+                                <li><a title="Logout" class="navigation" href="{% url 'logout' %}">Logout</a></li>
+                            {% else %}
+                                <li><a title="Login" class="navigation" href="{% url 'login' %}">Login</a></li>
+                                <li><a title="Sign Up" class="navigation" href="{% url 'signup' %}">Sign Up</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
 {% endblock %}
 
 {% block content %}
@@ -148,22 +148,22 @@
 
 {% block footer %}
     <footer class="footer" style="background-color: black;">
-                    <nav class="pagination" aria-label="Footer">
-                        <div class="previous">
-                            <a href="" title="">
-                                <div class="page">
-                                    <div class="stretch">
-                                        <div class="title">
+        <nav class="pagination" aria-label="Footer">
+            <div class="previous">
+                <a href="" title="">
+                    <div class="page">
+                        <div class="stretch">
+                            <div class="title">
 
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
+                            </div>
                         </div>
-                        <div class="next">
-                        </div>
-                    </nav>
-                </footer>
+                    </div>
+                </a>
+            </div>
+            <div class="next">
+            </div>
+        </nav>
+    </footer>
 {% endblock %}
 
 {% block scripts %}
