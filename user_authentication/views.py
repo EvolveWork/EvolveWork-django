@@ -52,6 +52,8 @@ def account(request):
                 print(timestamp)
                 return render(request, 'account.html', {'timestamp': timestamp})
             except InvalidRequestError:
-                messages.warning(request, 'Looks like our payment processing portal is down. Please try again later.')
+                messages.warning(request, 'Looks like something went wrong. Please try again later.')
+            except Exception:
+                messages.warning(request, 'Looks like something went wrong. Please try again later.')
         return render(request, 'account.html', {'timestamp': 'N/A'})
     return redirect('login')
