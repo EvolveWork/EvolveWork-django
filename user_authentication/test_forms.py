@@ -22,13 +22,13 @@ class TestSignUpForm(TestCase):
         self.assertFalse(form.is_valid())
 
 
-class TestUserAdminCreationForm(TestCase):
-
-    def test_clean_password2(self):
-        form = UserAdminCreationForm({
-            'email': 'test_signupform@gmail.com',
-            'full_name': 'test signupform',
-            'password1': 'testing_test_pw',
-            'password2': 'testing_test_pw'
-        })
-        self.assertEqual(form.clean_password2(), 'testing_test_pw')
+# class TestUserAdminCreationForm(TestCase):
+#
+#     def test_clean_password2(self):
+#         form = UserAdminCreationForm({
+#             'email': 'test_signupform@gmail.com',
+#             'full_name': 'test signupform',
+#             'password1': 'testing_test_pw',
+#             'password2': 'testing_test_pw'
+#         })
+#         self.assertEqual(form.clean_password2(), 'testing_test_pw')

@@ -1,3 +1,4 @@
+import stripe
 from django.test import TestCase
 from django.urls import reverse
 
@@ -48,3 +49,15 @@ class TestSignUpViewWhileLoggedOut(TestCase):
         })
         self.assertRedirects(response, reverse('home'))
 
+
+class TestAccountView(TestCase):
+
+    def setUp(self):
+        User.objects.create_user(email='test@gmail.com', full_name='testable full_name',
+                                 password='testing_test_pw')
+        self.client.login(email='test@gmail.com', password='testing_test_pw')
+
+    def test_invalid_request_error(self):
+        user = User.objects.get(email='test@gmail.com')
+        user.stripeId = '1'
+        self.assertRaises(stripe.error.InvalidRequestError, stripe.Customer.retrieve, user.stripeId)

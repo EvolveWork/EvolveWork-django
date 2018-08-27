@@ -16,34 +16,34 @@ def charge_view(request):
     return redirect('home')
 
 
-def register_and_checkout(request):
-    if request.method == 'POST':
-        form = SignupForm(request.POST)
-        if form.is_valid():
-            try:
-                customer = stripe.Charge.create(
-                    amount=1500,
-                    currency='USD',
-                    email=form.cleaned_data['email'],
-                    card=form.cleaned_data['stripeId'],
-                )
-
-                form.save()
-                return redirect('charge_success')
-            except stripe.error.CardError as e:
-                form.add_error(e, 'This card has been declined')
-    else:
-        form = SignupForm()
-        months = range(1, 12)
-        years = range(2018, 2036)
-        publishable_api_key = settings.STRIPE_PUBLISHABLE_KEY
-        context = {
-            'form': form,
-            'months': months,
-            'years': years,
-            'publishable_api_key': publishable_api_key
-        }
-    return render(request, 'registration.html', context)
+# def register_and_checkout(request):
+#     if request.method == 'POST':
+#         form = SignupForm(request.POST)
+#         if form.is_valid():
+#             try:
+#                 customer = stripe.Charge.create(
+#                     amount=1500,
+#                     currency='USD',
+#                     email=form.cleaned_data['email'],
+#                     card=form.cleaned_data['stripeId'],
+#                 )
+#
+#                 form.save()
+#                 return redirect('charge_success')
+#             except stripe.error.CardError as e:
+#                 form.add_error(e, 'This card has been declined')
+#     else:
+#         form = SignupForm()
+#         months = range(1, 12)
+#         years = range(2018, 2036)
+#         publishable_api_key = settings.STRIPE_PUBLISHABLE_KEY
+#         context = {
+#             'form': form,
+#             'months': months,
+#             'years': years,
+#             'publishable_api_key': publishable_api_key
+#         }
+#     return render(request, 'registration.html', context)
 
 
 def checkout(request):

@@ -35,13 +35,12 @@ class TestCheckoutView(TestCase):
 
     def test_checkout_with_incorrect_card(self):
         try:
-            stripe.api_key = settings.STRIPE_SECRET_KEY
             self.assertRaises(stripe.error.CardError, stripe.Token.create, card={
-                    'number': '4242424242424241',
-                    'exp_month': '6',
-                    'exp_year': str(datetime.datetime.today().year + 1),
-                    'cvc': '123',
-                })
+                'number': '4242424242424241',
+                'exp_month': '6',
+                'exp_year': str(datetime.datetime.today().year + 1),
+                'cvc': '123',
+            })
         except Exception:
             self.fail('Stripe api may be down.')
 
@@ -76,9 +75,11 @@ class TestCheckoutView(TestCase):
                 'referrer': 'footer',
                 'stripeToken': token.id,
             })
-
+            # self.assertTemplateUsed(response, 'charge_success.html')
             self.assertEqual(response.status_code, 302)
-        except Exception:
+
+        except Exception as e:
+            print(e)
             self.fail('Stripe api may be down.')
 
         # Get the stripe event so we can post it to the webhook
@@ -109,3 +110,6 @@ class TestCancelSubscription(TestCase):
     def test_cancel_subscription_template(self):
         response = self.client.get(reverse('cancel_subscription'))
         self.assertTemplateUsed(response, 'charge_cancel.html')
+
+    def test_exception_raised(self):
+        self.assertRaises(Exception, stripe.Customer.retrieve, stripeId=1)
