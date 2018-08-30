@@ -83,7 +83,7 @@ class TestCancelSubscription(TestCase):
 
     def test_cancel_subscription_template(self):
         response = self.client.get(reverse('cancel_subscription'))
-        self.assertTemplateUsed(response, 'charge_cancel_complete.html')
+        self.assertTemplateUsed(response, 'charge_cancel.html')
 
     def test_exception_raised(self):
         self.assertRaises(Exception, stripe.Customer.retrieve, stripeId=1)

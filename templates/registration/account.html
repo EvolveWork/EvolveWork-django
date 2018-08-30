@@ -8,7 +8,11 @@
         <tr>
             <td>
                 {% if timestamp %}
-                    Your subscription will be renewed: <strong>{{ timestamp }}</strong>
+                    {% if period_end == True %}
+                        Your subscription will end: <strong>{{ timestamp }}</strong>
+                    {% else %}
+                        Your subscription will be renewed: <strong>{{ timestamp }}</strong>
+                    {% endif %}
                 {% else %}
                     <a href="{% url 'charge' %}">Subscribe now!</a>
                 {% endif %}
