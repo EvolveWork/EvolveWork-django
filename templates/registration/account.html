@@ -13,23 +13,26 @@
             <table>
                 <tr>
                     <td>
-                    {% if timestamp %}
-                        Your subscription will be renewed: <strong>{{ timestamp }}</strong>
+                        {% if timestamp %}
+                            Your subscription will be renewed: <strong>{{ timestamp }}</strong>
+                        {% else %}
+                            <a href="{% url 'charge' %}">Subscribe now!</a>
+                        {% endif %}
                         {% if messages %}
-                        <ul class="messages">
-                            {% for message in messages %}
-                                <li class="{{ message.tags }}">{{ message }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
+                            <ul class="messages">
+                                {% for message in messages %}
+                                    <li class="{{ message.tags }}">{{ message }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a title="Cancel Subscription" href="{% url 'cancel_subscription' %}">Cancel Subscription</a>
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <a title="Change Password" href="{% url 'password_change' %}">Change Password</a>
-                    </td>
-                    <td>
-                        <a title="Cancel Subscription" href="{% url 'cancel_subscription' %}">Cancel Subscription</a>
                     </td>
                 </tr>
             </table>

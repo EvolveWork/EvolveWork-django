@@ -11,7 +11,7 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 def charge_view(request):
     user = request.user
-    if user.is_authenticated and not stripe.Customer.retrieve(user.stripeId):
+    if user.is_authenticated and user.stripeId is None:
         context = {"stripe_key": settings.STRIPE_TEST_PUBLIC_KEY}
         return render(request, "charge.html", context)
     return redirect('account')
@@ -50,15 +50,9 @@ def charge_view(request):
 def checkout(request):
     user = request.user
     if user.is_authenticated:
-        if not stripe.Customer.retrieve(user.stripeId):
+        if user.stripeId is None:
             if request.method == 'POST':
                 try:
-                    # customer = stripe.Customer.retrieve(user.stripeId)
-                    # if customer.plan != 'plan_DJBWu9zs91csmJ':
-                    #     customer.plan = 'plan_DJBWu9zs91csmJ'
-                    # customer.card = request.POST.get("stripeToken")
-                    # customer.save()
-                    # except stripe.error.InvalidRequestError:
                     new_customer = stripe.Customer.create(
                         email=user.email,
                         plan='plan_DJBWu9zs91csmJ',
@@ -89,7 +83,10 @@ def cancel_subscription(request):
         customer = stripe.Customer.retrieve(request.user.stripeId)
         subscription_id = customer.subscriptions.get('data')[0].get('id')
         subscription = stripe.Subscription.retrieve(subscription_id)
-        subscription.delete(at_period_end=True)
+        subscription.cancel_at_period_end = True
+        for k, v in subscription.items():
+            print(k, v)
     except Exception as e:
         messages.error(request, "Looks like something went wrong. Are you sure you have a subscription set up?")
+        print(e)
     return render(request, 'charge_cancel.html', {})

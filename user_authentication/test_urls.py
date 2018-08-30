@@ -51,6 +51,7 @@ class TestUserAuthenticationUrls(TestCase):
         response = self.client.get(reverse('charge'))
         self.assertEqual(response.status_code, 302)
 
+
     # def test_password_reset_url_status_code_is_200(self):
     #     response = self.client.get(reverse('password_reset'))
     #     self.assertEqual(response.status_code, 200)

@@ -49,10 +49,10 @@ def account(request):
                 customer = stripe.Customer.retrieve(user.stripeId)
                 current_period_end = customer.subscriptions.get('data')[0].get('current_period_end')
                 timestamp = datetime.datetime.fromtimestamp(current_period_end)
-                return render(request, 'account.html', {'timestamp': timestamp})
+                return render(request, 'account.html', {'timestamp': timestamp, 'current_period_end': current_period_end})
             except InvalidRequestError:
                 messages.warning(request, 'Looks like something went wrong. Please try again later.')
             except Exception:
                 messages.warning(request, 'Looks like something went wrong. Please try again later.')
-        return render(request, 'account.html', {'timestamp': 'N/A'})
+        return render(request, 'account.html', {})
     return redirect('login')
