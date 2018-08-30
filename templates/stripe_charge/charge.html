@@ -1,33 +1,20 @@
 {% extends 'base.html' %}
 {% load static %}
 
-
-
 {% block content %}
-    <article class="article">
-        <div class="wrapper">
-            <div class="logo">
-                <img src="{% static 'banner_screenshot.png' %}">
-            </div>
+    <h1 style="border-bottom: 3px solid #FD8224; color: #FD8224; margin-bottom: 10px;">Subscribe </h1>
 
-            <h1 style="border-bottom: 3px solid #FD8224; color: #FD8224; margin-bottom: 10px;">Subscribe </h1>
-
-            <form action="{% url 'checkout' %}" method="POST">{% csrf_token %}
-                <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                        data-key="{{ stripe_key }}"
-                        data-amount="2000"
-                        data-name="Evolve Coworking"
-                        data-description="Recurring payment to gain access to the coworking space."
-                        data-currency="usd"
-                        data-zip-code="true"
-                        data-locale="auto"
-                        data-billing-address="true"
-                        data-image="{% static 'evolve_logo.svg' %}">
-                </script>
-            </form>
-
-            <aside class="copyright" role="note"></aside>
-        </div>
-    </article>
-    </main>
+    <form action="{% url 'checkout' %}" method="POST">{% csrf_token %}
+        <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                data-key="{{ stripe_key }}"
+                data-amount="2000"
+                data-name="Evolve Coworking"
+                data-description="Recurring payment to gain access to the coworking space."
+                data-currency="usd"
+                data-zip-code="true"
+                data-locale="auto"
+                data-billing-address="true"
+                data-image="{% static 'evolve_logo.svg' %}">
+        </script>
+    </form>
 {% endblock %}

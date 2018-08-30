@@ -2,42 +2,32 @@
 {% load static %}
 
 {% block content %}
-    <article class="article">
-        <div class="wrapper">
-            <div class="logo">
-                <img src="{% static 'banner_screenshot.png' %}">
-            </div>
+    <h1 style="border-bottom: 3px solid #FD8224; color: #FD8224; margin-bottom: 10px;">Account Management: </h1>
 
-            <h1 style="border-bottom: 3px solid #FD8224; color: #FD8224; margin-bottom: 10px;">Account Management: </h1>
-
-            <table>
-                <tr>
-                    <td>
-                        {% if timestamp %}
-                            Your subscription will be renewed: <strong>{{ timestamp }}</strong>
-                        {% else %}
-                            <a href="{% url 'charge' %}">Subscribe now!</a>
-                        {% endif %}
-                        {% if messages %}
-                            <ul class="messages">
-                                {% for message in messages %}
-                                    <li class="{{ message.tags }}">{{ message }}</li>
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
-                    </td>
-                    <td>
-                        <a title="Cancel Subscription" href="{% url 'cancel_subscription' %}">Cancel Subscription</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <a title="Change Password" href="{% url 'password_change' %}">Change Password</a>
-                    </td>
-                </tr>
-            </table>
-            <aside class="copyright" role="note"></aside>
-        </div>
-    </article>
-    </main>
+    <table>
+        <tr>
+            <td>
+                {% if timestamp %}
+                    Your subscription will be renewed: <strong>{{ timestamp }}</strong>
+                {% else %}
+                    <a href="{% url 'charge' %}">Subscribe now!</a>
+                {% endif %}
+                {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                            <li class="{{ message.tags }}">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </td>
+            <td>
+                <a title="Cancel Subscription" href="{% url 'cancel_subscription' %}">Cancel Subscription</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a title="Change Password" href="{% url 'password_change' %}">Change Password</a>
+            </td>
+        </tr>
+    </table>
 {% endblock %}

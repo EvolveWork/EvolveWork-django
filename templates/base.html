@@ -143,8 +143,17 @@
     </div>
 {% endblock %}
 
-{% block content %}
-{% endblock %}
+<article class="article">
+    <div class="wrapper">
+
+        <div class="logo">
+            <img src="{% static 'banner_screenshot.png' %}"
+                 style="width: 75%; margin-left: auto; margin-right: auto; display: block;">
+        </div>
+        {% block content %}
+        {% endblock %}
+    </div>
+</article>
 
 {% block footer %}
     <footer class="footer" style="background-color: black;">

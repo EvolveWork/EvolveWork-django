@@ -1,43 +1,36 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-        <article class="article">
-            <div class="wrapper">
+    {% if user.is_authenticated %}
+        <h1 style="border-bottom: 3px solid #FD8224; color: #FD8224; margin-bottom: 10px;">You're already logged
+            in!</h1>
+    {% else %}
+        <h1 style="border-bottom: 3px solid #FD8224; color: #FD8224; margin-bottom: 10px;">Login </h1>
 
-                <div class="logo">
-                <img src="{% static 'banner_screenshot.png' %}">
-            </div>
+        <p><strong> If you have not signed up, please click here: <a href="{% url 'signup' %}" target="_blank">Sign
+            Up</a>.</strong>
+        </p>
 
-            <h1 style="border-bottom: 3px solid #FD8224; color: #FD8224; margin-bottom: 10px;">Login </h1>
-
-                <p><strong> If you have not signed up, please click here: <a href="{% url 'signup' %}" target="_blank">Sign Up</a>.</strong></p>
-
-                <form method="post" action="{% url 'login' %}">
-                    {% csrf_token %}
-                    <table>
-                        <tr>
-                            <td>{{ form.username.label_tag }}</td>
-                            <td>{{ form.username }}</td>
-                        </tr>
-                        <tr>
-                            <td>{{ form.password.label_tag }}</td>
-                            <td>{{ form.password }}</td>
-                        </tr>
-                        <tr>
-                            <td>
-                               <strong><a href="{% url 'password_reset' %}">Forget your password?</a> </strong>
-                            </td>
-                            <td>
-                                <button id="submit_login_button" type="submit"><strong>Login</strong></button>
-                            </td>
-                        </tr>
-                    </table>
-                </form>
-                <p></p>
-                <aside class="copyright" role="note">
-                </aside>
-            </div>
-        </article>
-    </main>
-
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <td>{{ form.username.label_tag }}</td>
+                    <td>{{ form.username }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.password.label_tag }}</td>
+                    <td>{{ form.password }}</td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong><a href="{% url 'password_reset' %}">Forget your password?</a> </strong>
+                    </td>
+                    <td>
+                        <button id="submit_login_button" type="submit"><strong>Login</strong></button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    {% endif %}
 {% endblock %}
