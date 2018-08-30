@@ -2,12 +2,16 @@
 {% load static %}
 
 {% block content %}
-
-    <h1 style="border-bottom: 3px solid #FD8224; color: #FD8224; margin-bottom: 10px;">Subscription
-        canceled</h1>
-    <ul class="messages">
-        {% for message in messages %}
-            <li class="{{ message.tags }}">{{ message }}</li>
-        {% endfor %}
-    </ul>
+    <h1 style="border-bottom: 3px solid #FD8224; color: #FD8224; margin-bottom: 10px;">Logout </h1>
+    <table>
+        <tr>
+            <td>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'cancel_subscription_complete' %}">Click here to cancel</a>
+                {% else %}
+                    Doesn't look like you're logged in.
+                {% endif %}
+            </td>
+        </tr>
+    </table>
 {% endblock %}

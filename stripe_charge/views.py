@@ -79,6 +79,11 @@ def charge_success(request):
 
 @login_required()
 def cancel_subscription(request):
+    return render(request, 'charge_cancel.html', {})
+
+
+@login_required()
+def cancel_subscription_complete(request):
     try:
         customer = stripe.Customer.retrieve(request.user.stripeId)
         subscription_id = customer.subscriptions.get('data')[0].get('id')
@@ -89,4 +94,4 @@ def cancel_subscription(request):
     except Exception as e:
         messages.error(request, "Looks like something went wrong. Are you sure you have a subscription set up?")
         print(e)
-    return render(request, 'charge_cancel.html', {})
+    return render(request, 'charge_cancel_complete.html', {})
