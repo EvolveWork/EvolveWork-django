@@ -2,6 +2,19 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 
+class Product(models.Model):
+    currency = models.CharField(max_length=3, blank=True, null=True)
+
+
+class Plan(models.Model):
+    currency = models.CharField(max_length=3,
+                                blank=True, null=True)
+    interval = models.CharField(max_length=255, default='Month', editable=False)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, blank=True, null=True)
+    nickname = models.CharField(max_length=255, blank=True, null=True)
+    amount = models.CharField(max_length=255, blank=True, null=True)
+
+
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, full_name, password=None, is_active=True, is_staff=False, is_admin=False):
         if not email:
@@ -49,12 +62,20 @@ class User(AbstractBaseUser):
     staff = models.BooleanField(default=False)
     admin = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
+
+    # Address information gathered from Stripe subscribe form:
     stripeId = models.CharField(max_length=255, blank=True, null=True)
     stripeBillingAddressLine1 = models.CharField(max_length=255, blank=True, null=True)
     zipCode = models.CharField(max_length=255, blank=True, null=True)
     billingAddressState = models.CharField(max_length=255, blank=True, null=True)
     billingAddressCity = models.CharField(max_length=255, blank=True, null=True)
     billingAddressCountry = models.CharField(max_length=2, blank=True, null=True)
+
+    # Stripe Subscription information:
+    subscription_id = models.CharField(max_length=255, blank=True, null=True)
+    renewal_date = models.CharField(max_length=255, blank=True, null=True)
+    cancel_at_period_end = models.BooleanField(default=False, blank=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, blank=True, null=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['full_name']
@@ -91,4 +112,3 @@ class User(AbstractBaseUser):
     @property
     def active(self):
         return self.is_active
-

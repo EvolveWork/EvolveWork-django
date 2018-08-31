@@ -59,17 +59,22 @@ def checkout(request):
                         card=request.POST.get("stripeToken")
                     )
                     user.stripeId = new_customer.id
-                    user.stripeBillingAddressLine1 = request.POST.get('stripeBillingAddressLine1')
-                    user.zipCode = request.POST.get('stripeBillingAddressZip')
-                    user.billingAddressState = request.POST.get('stripeBillingAddressState')
-                    user.billingAddressCity = request.POST.get('stripeBillingAddressCity')
-                    user.billingAddressCountry = request.POST.get('stripeBillingAddressCountry')
                     user.save()
+                    load_stripe_data_into_user_model(request, user)
                 except stripe.error.CardError as ce:
                     return False, ce
                 else:
                     return redirect('charge_success')
     return redirect('account')
+
+
+def load_stripe_data_into_user_model(request, user):
+    user.stripeBillingAddressLine1 = request.POST.get('stripeBillingAddressLine1')
+    user.zipCode = request.POST.get('stripeBillingAddressZip')
+    user.billingAddressState = request.POST.get('stripeBillingAddressState')
+    user.billingAddressCity = request.POST.get('stripeBillingAddressCity')
+    user.billingAddressCountry = request.POST.get('stripeBillingAddressCountry')
+    user.save()
 
 
 @login_required()
@@ -95,3 +100,13 @@ def cancel_subscription_complete(request):
         messages.error(request, "Looks like something went wrong. Are you sure you have a subscription set up?")
         print(e)
     return render(request, 'charge_cancel_complete.html', {})
+
+
+def renew_subscription(request):
+    context = {}
+    return render(request, 'renew_subscription.html', context)
+
+
+def renew_subscription_complete(request):
+    context = {}
+    return render(request, 'renew_subscription_complete.html', context)

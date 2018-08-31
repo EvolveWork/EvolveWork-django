@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <h1 style="border-bottom: 3px solid #FD8224; color: #FD8224; margin-bottom: 10px;">Renew Subscription </h1>
+    <table>
+        <tr>
+            <td>
+                <a href="{% url 'renew_subscription_complete' %}">
+                    Click here to renew your subscription.
+                </a>
+            </td>
+        </tr>
+    </table>
+
+{% endblock %}

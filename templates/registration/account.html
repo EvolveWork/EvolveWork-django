@@ -6,27 +6,34 @@
 
     <table>
         <tr>
-            <td>
-                {% if timestamp %}
-                    {% if period_end == True %}
+            {% if timestamp %}
+                {% if period_end == True %}
+                    <td>
                         Your subscription will end: <strong>{{ timestamp }}</strong>
-                    {% else %}
-                        Your subscription will be renewed: <strong>{{ timestamp }}</strong>
-                    {% endif %}
+                    </td>
+{#                    <td>#}
+{#                        <a title="Renew Subscription" href="{% url 'renew_subscription' %}">Renew Subscription</a>#}
+{#                    </td>#}
                 {% else %}
+                    <td>
+                        Your subscription will be renewed: <strong>{{ timestamp }}</strong>
+                    </td>
+                    <td>
+                        <a title="Cancel Subscription" href="{% url 'cancel_subscription' %}">Cancel Subscription</a>
+                    </td>
+                {% endif %}
+            {% else %}
+                <td>
                     <a href="{% url 'charge' %}">Subscribe now!</a>
-                {% endif %}
-                {% if messages %}
-                    <ul class="messages">
-                        {% for message in messages %}
-                            <li class="{{ message.tags }}">{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            </td>
-            <td>
-                <a title="Cancel Subscription" href="{% url 'cancel_subscription' %}">Cancel Subscription</a>
-            </td>
+                </td>
+            {% endif %}
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li class="{{ message.tags }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         </tr>
         <tr>
             <td>
