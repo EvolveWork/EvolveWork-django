@@ -4,8 +4,6 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
-from user_authentication.forms import SignupForm
-
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
@@ -15,36 +13,6 @@ def charge_view(request):
         context = {"stripe_key": settings.STRIPE_TEST_PUBLIC_KEY}
         return render(request, "charge.html", context)
     return redirect('account')
-
-
-# def register_and_checkout(request):
-#     if request.method == 'POST':
-#         form = SignupForm(request.POST)
-#         if form.is_valid():
-#             try:
-#                 customer = stripe.Charge.create(
-#                     amount=1500,
-#                     currency='USD',
-#                     email=form.cleaned_data['email'],
-#                     card=form.cleaned_data['stripeId'],
-#                 )
-#
-#                 form.save()
-#                 return redirect('charge_success')
-#             except stripe.error.CardError as e:
-#                 form.add_error(e, 'This card has been declined')
-#     else:
-#         form = SignupForm()
-#         months = range(1, 12)
-#         years = range(2018, 2036)
-#         publishable_api_key = settings.STRIPE_PUBLISHABLE_KEY
-#         context = {
-#             'form': form,
-#             'months': months,
-#             'years': years,
-#             'publishable_api_key': publishable_api_key
-#         }
-#     return render(request, 'registration.html', context)
 
 
 def checkout(request):
@@ -60,7 +28,7 @@ def checkout(request):
                     )
                     user.stripeId = new_customer.id
                     user.save()
-                    load_stripe_data_into_user_model(request, user)
+                    load_stripe_form_data_into_user_model(request, user)
                 except stripe.error.CardError as ce:
                     return False, ce
                 else:
@@ -68,7 +36,7 @@ def checkout(request):
     return redirect('account')
 
 
-def load_stripe_data_into_user_model(request, user):
+def load_stripe_form_data_into_user_model(request, user):
     user.stripeBillingAddressLine1 = request.POST.get('stripeBillingAddressLine1')
     user.zipCode = request.POST.get('stripeBillingAddressZip')
     user.billingAddressState = request.POST.get('stripeBillingAddressState')

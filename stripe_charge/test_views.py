@@ -1,10 +1,13 @@
 import datetime
+from unittest import mock
 
 import stripe
+from stripe.api_resources import Token
 from django.test import TestCase
 from django.urls import reverse
 from stripe.error import CardError
 
+from stripe_charge.models import MockCustomer, MockToken
 from user_authentication.models import User
 
 
@@ -42,37 +45,68 @@ class TestCheckoutView(TestCase):
         except Exception:
             self.fail('Stripe api may be down.')
 
-    def test_charge_checkout_view(self):
+    @mock.patch('stripe.Token', MockToken)
+    @mock.patch('stripe.Customer.create', MockCustomer)
+    def test_stripe_create_customer(self, mock_create):
 
-        # TODO - Need to be sure that the proper template/redirection is occuring.
+        token = stripe.Token.create(
+            card={
+                'number': '4242424242424242',
+                'exp_month': '6',
+                'exp_year': str(datetime.datetime.today().year + 1),
+                'cvc': '123',
+            }
+        )
 
-        try:
-            token = stripe.Token.create(
-                card={
-                    'number': '4242424242424242',
-                    'exp_month': '6',
-                    'exp_year': str(datetime.datetime.today().year + 1),
-                    'cvc': '123',
-                }
-            )
-            response = self.client.post(reverse('checkout'), data={
-                'amount': '25',
-                'payment_provider': 'cc',
-                'first_name': 'Barack',
-                'last_name': 'Obama',
-                'address1': '1600 Pennsylvania Ave.',
-                'address2': 'The Whitehouse',
-                'city': 'DC',
-                'state': 'DC',
-                'zip_code': '20500',
-                'email': 'barack@freelawproject.org',
-                'referrer': 'footer',
-                'stripeToken': token.id,
-            })
-            self.assertEqual(response.status_code, 302)
+        data = {
+            'amount': '25',
+            'payment_provider': 'cc',
+            'first_name': 'Barack',
+            'last_name': 'Obama',
+            'address1': '1600 Pennsylvania Ave.',
+            'address2': 'The Whitehouse',
+            'city': 'DC',
+            'state': 'DC',
+            'zip_code': '20500',
+            'email': 'barack@freelawproject.org',
+            'referrer': 'footer',
+            'stripeToken': token.id,
+        }
 
-        except Exception:
-            self.fail('Stripe api may be down.')
+        response = self.client.post(reverse('checkout'), data=data, format='json')
+        self.assertEqual(response.status_code, 302)
+
+    # def test_charge_checkout_view(self):
+    #
+    #     # TODO - Need to be sure that the proper template/redirection is occuring.
+    #
+    #     try:
+    #         token = stripe.Token.create(
+    #             card={
+    #                 'number': '4242424242424242',
+    #                 'exp_month': '6',
+    #                 'exp_year': str(datetime.datetime.today().year + 1),
+    #                 'cvc': '123',
+    #             }
+    #         )
+    #         response = self.client.post(reverse('checkout'), data={
+    #             'amount': '25',
+    #             'payment_provider': 'cc',
+    #             'first_name': 'Barack',
+    #             'last_name': 'Obama',
+    #             'address1': '1600 Pennsylvania Ave.',
+    #             'address2': 'The Whitehouse',
+    #             'city': 'DC',
+    #             'state': 'DC',
+    #             'zip_code': '20500',
+    #             'email': 'barack@freelawproject.org',
+    #             'referrer': 'footer',
+    #             'stripeToken': token.id,
+    #         })
+    #         self.assertEqual(response.status_code, 302)
+    #
+    #     except Exception:
+    #         self.fail('Stripe api may be down.')
 
 
 class TestCancelSubscription(TestCase):

@@ -3,16 +3,24 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 
 class Product(models.Model):
-    currency = models.CharField(max_length=3, blank=True, null=True)
+    id = models.CharField(max_length=255, blank=True, primary_key=True)
+    name = models.CharField(max_length=255, blank=True, null=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Plan(models.Model):
+    id = models.CharField(max_length=255, blank=True, primary_key=True)
     currency = models.CharField(max_length=3,
                                 blank=True, null=True)
     interval = models.CharField(max_length=255, default='Month', editable=False)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, blank=True, null=True)
     nickname = models.CharField(max_length=255, blank=True, null=True)
     amount = models.CharField(max_length=255, blank=True, null=True)
+
+    def __str__(self):
+        return self.nickname
 
 
 class CustomUserManager(BaseUserManager):
@@ -75,7 +83,7 @@ class User(AbstractBaseUser):
     subscription_id = models.CharField(max_length=255, blank=True, null=True)
     renewal_date = models.CharField(max_length=255, blank=True, null=True)
     cancel_at_period_end = models.BooleanField(default=False, blank=True)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, blank=True, null=True)
+    plan = models.ForeignKey(Plan, on_delete=models.CASCADE, blank=True, null=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['full_name']

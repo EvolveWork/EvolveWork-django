@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect
 from stripe.error import InvalidRequestError
 
 from evolve_work import settings
+from user_authentication.models import Plan
 from .forms import SignupForm
 
 User = get_user_model()
@@ -46,14 +47,37 @@ def account(request):
     if user.is_authenticated:
         if user.stripeId:
             try:
+                load_subscription_data(user)
                 customer = stripe.Customer.retrieve(user.stripeId)
                 current_period_end = customer.subscriptions.get('data')[0].get('current_period_end')
                 period_end = customer.subscriptions.get('data')[0].get('cancel_at_period_end')
                 timestamp = datetime.datetime.fromtimestamp(current_period_end)
-                return render(request, 'account.html', {'timestamp': timestamp, 'current_period_end': current_period_end, 'period_end': period_end})
-            except InvalidRequestError:
+                context = {
+                    'timestamp': timestamp,
+                    'current_period_end': current_period_end,
+                    'period_end': period_end
+                }
+                return render(request, 'account.html', context)
+            except InvalidRequestError as e:
                 messages.warning(request, 'Looks like something went wrong. Please try again later.')
-            except Exception:
+                print(e)
+            except Exception as e:
                 messages.warning(request, 'Looks like something went wrong. Please try again later.')
+                print(e)
         return render(request, 'account.html', {})
     return redirect('login')
+
+
+def load_subscription_data(user):
+    customer_api_call = stripe.Customer.retrieve(user.stripeId)
+    subscription_id = customer_api_call.subscriptions.get('data')[0].get('id')
+    current_period_end = customer_api_call.subscriptions.get('data')[0].get('current_period_end')
+    renewal_date = datetime.datetime.fromtimestamp(current_period_end)
+    cancel_at_period_end = customer_api_call.subscriptions.get('data')[0].get('cancel_at_period_end')
+    # plan_id = customer_api_call.subscriptions.get('data')[0].get('items').get('data')[0].get('plan').get('id')
+
+    user.subscription_id = subscription_id
+    user.renewal_date = renewal_date
+    user.cancel_at_period_end = cancel_at_period_end
+    user.plan = Plan.objects.get(nickname='Cheap_test_monthly')
+    user.save()

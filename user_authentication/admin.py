@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
+from .models import Plan, Product
 from .forms import UserAdminCreationForm, UserAdminChangeForm
 
 User = get_user_model()
@@ -22,6 +23,7 @@ class UserAdmin(BaseUserAdmin):
            'full_name', 'email', 'password',)}),
         ('Stripe info', {'fields': ('stripeId', 'stripeBillingAddressLine1', 'zipCode', 'billingAddressState',
                                     'billingAddressCity', 'billingAddressCountry')}),
+        ('Subscription information', {'fields': ('subscription_id', 'renewal_date', 'cancel_at_period_end', 'plan')}),
         ('Permissions', {'fields': ('is_active', 'staff', 'admin')}),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
@@ -38,3 +40,5 @@ class UserAdmin(BaseUserAdmin):
 
 
 admin.site.register(User, UserAdmin)
+admin.site.register(Plan)
+admin.site.register(Product)
