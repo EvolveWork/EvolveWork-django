@@ -55,12 +55,40 @@ def cancel_subscription(request):
     return render(request, 'charge_cancel.html', {})
 
 
+def handle_stripe_exception(exception):
+    print('Exception Handled: ' + str(exception))
+
+
+def get_customer_from_stripe_id(request):
+    try:
+        customer = stripe.Customer.retrieve(request.user.stripeId)
+        return customer
+    except Exception as exception:
+        handle_stripe_exception(exception)
+
+
+def get_subscription_id_from_customer_id(customer):
+    try:
+        subscription_id = customer.subscription.get('data')[0].get('id')
+        return subscription_id
+    except Exception as exception:
+        handle_stripe_exception(exception)
+
+
+def get_subscription_from_subscription_id(subscription_id):
+    try:
+        subscription = stripe.Subscription.retrieve(subscription_id)
+        return subscription
+    except Exception as exception:
+        handle_stripe_exception(exception)
+
+
 @login_required()
 def cancel_subscription_complete(request):
     try:
-        customer = stripe.Customer.retrieve(request.user.stripeId)
-        subscription_id = customer.subscriptions.get('data')[0].get('id')
-        subscription = stripe.Subscription.retrieve(subscription_id)
+        customer = get_customer_from_stripe_id(request)
+        subscription_id = get_customer_from_stripe_id(customer)
+        subscription = get_subscription_from_subscription_id(subscription_id)
         subscription.cancel_at_period_end = True
         for k, v in subscription.items():
             print(k, v)
