@@ -60,6 +60,11 @@ def handle_stripe_exception(exception):
 
 
 def get_customer_from_current_users_stripe_id_with_api_call(request):
+    '''
+    Uses the request from a view to get the current user's stripeId.
+    This stripeId is used in a stripe api call to retrieve the Customer
+    object that correlates to the provided stripeId.
+    '''
     try:
         customer = stripe.Customer.retrieve(request.user.stripeId)
         return customer
@@ -73,6 +78,10 @@ def get_customers_current_subscription_id(customer):
         return subscription_id
     except Exception as exception:
         handle_stripe_exception(exception)
+
+
+def set_users_subscription_id(user):
+    user.subscription_id = get_customers_current_subscription_id(user)
 
 
 def get_subscription_using_subscription_id_with_api_call(subscription_id):
