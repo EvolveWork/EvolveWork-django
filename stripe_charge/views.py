@@ -59,14 +59,15 @@ def handle_stripe_exception(exception):
     print('Stripe exception handled at: ' + str(exception))
 
 
-def get_customer_from_current_users_stripe_id_with_api_call(request):
-    '''
+def get_customer_from_current_users_stripe_id_with_api_call(user):
+    """
     Uses the request from a view to get the current user's stripeId.
     This stripeId is used in a stripe api call to retrieve the Customer
     object that correlates to the provided stripeId.
-    '''
+    This function returns that Customer object
+    """
     try:
-        customer = stripe.Customer.retrieve(request.user.stripeId)
+        customer = stripe.Customer.retrieve(user.stripeId)
         return customer
     except Exception as exception:
         handle_stripe_exception(exception)
@@ -81,7 +82,23 @@ def get_customers_current_subscription_id(customer):
 
 
 def set_users_subscription_id(user):
-    user.subscription_id = get_customers_current_subscription_id(user)
+    customer_object = get_customer_from_current_users_stripe_id_with_api_call(user)
+    user.subscription_id = get_customers_current_subscription_id(customer_object)
+    user.save()
+
+
+def get_customers_current_period_end(customer):
+    try:
+        current_period_end = customer.subscriptions.get('data')[0].get('current_period_end')
+        return current_period_end
+    except Exception as exception:
+        handle_stripe_exception(exception)
+
+
+def set_users_subscription_current_period_end(user):
+    customer_object = get_customer_from_current_users_stripe_id_with_api_call(user)
+    user.current_period_end = get_customers_current_period_end(customer_object)
+    user.save()
 
 
 def get_subscription_using_subscription_id_with_api_call(subscription_id):
@@ -94,8 +111,9 @@ def get_subscription_using_subscription_id_with_api_call(subscription_id):
 
 @login_required()
 def cancel_subscription_complete(request):
+    user = request.user
     try:
-        customer = get_customer_from_current_users_stripe_id_with_api_call(request)
+        customer = get_customer_from_current_users_stripe_id_with_api_call(user)
         subscription_id = get_customers_current_subscription_id(customer)
         subscription = get_subscription_using_subscription_id_with_api_call(subscription_id)
         subscription.cancel_at_period_end = True

@@ -47,7 +47,7 @@ class TestCheckoutView(TestCase):
 
     @mock.patch('stripe.Token', MockToken)
     @mock.patch('stripe.Customer.create', MockCustomer)
-    def test_stripe_create_customer(self, mock_create):
+    def test_stripe_create_customer(self):
 
         token = stripe.Token.create(
             card={
