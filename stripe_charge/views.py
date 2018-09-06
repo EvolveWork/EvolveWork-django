@@ -55,49 +55,12 @@ def cancel_subscription(request):
     return render(request, 'charge_cancel.html', {})
 
 
-def handle_stripe_exception(exception):
-    print('Stripe exception handled at: ' + str(exception))
-
-
-def get_customer_from_current_users_stripe_id_with_api_call(request):
-    '''
-    Uses the request from a view to get the current user's stripeId.
-    This stripeId is used in a stripe api call to retrieve the Customer
-    object that correlates to the provided stripeId.
-    '''
-    try:
-        customer = stripe.Customer.retrieve(request.user.stripeId)
-        return customer
-    except Exception as exception:
-        handle_stripe_exception(exception)
-
-
-def get_customers_current_subscription_id(customer):
-    try:
-        subscription_id = customer.subscription.get('data')[0].get('id')
-        return subscription_id
-    except Exception as exception:
-        handle_stripe_exception(exception)
-
-
-def set_users_subscription_id(user):
-    user.subscription_id = get_customers_current_subscription_id(user)
-
-
-def get_subscription_using_subscription_id_with_api_call(subscription_id):
-    try:
-        subscription = stripe.Subscription.retrieve(subscription_id)
-        return subscription
-    except Exception as exception:
-        handle_stripe_exception(exception)
-
-
 @login_required()
 def cancel_subscription_complete(request):
     try:
-        customer = get_customer_from_current_users_stripe_id_with_api_call(request)
-        subscription_id = get_customers_current_subscription_id(customer)
-        subscription = get_subscription_using_subscription_id_with_api_call(subscription_id)
+        customer = stripe.Customer.retrieve(request.user.stripeId)
+        subscription_id = customer.subscriptions.get('data')[0].get('id')
+        subscription = stripe.Subscription.retrieve(subscription_id)
         subscription.cancel_at_period_end = True
         for k, v in subscription.items():
             print(k, v)
@@ -115,3 +78,4 @@ def renew_subscription(request):
 def renew_subscription_complete(request):
     context = {}
     return render(request, 'renew_subscription_complete.html', context)
+
