@@ -113,12 +113,16 @@ def get_subscription_using_subscription_id_with_api_call(subscription_id):
 def cancel_subscription_complete(request):
     user = request.user
     try:
+
         customer = get_customer_from_current_users_stripe_id_with_api_call(user)
         subscription_id = get_customers_current_subscription_id(customer)
         subscription = get_subscription_using_subscription_id_with_api_call(subscription_id)
         subscription.cancel_at_period_end = True
-        for k, v in subscription.items():
-            print(k, v)
+        subscription.save()
+        request.user.cancel_at_period_end = True
+        request.user.save()
+        # for k, v in subscription.items():
+        #     print(k, v)
     except Exception as e:
         messages.error(request, "Looks like something went wrong. Are you sure you have a subscription set up?")
         print(e)
@@ -133,3 +137,4 @@ def renew_subscription(request):
 def renew_subscription_complete(request):
     context = {}
     return render(request, 'renew_subscription_complete.html', context)
+
