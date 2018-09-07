@@ -27,11 +27,11 @@ def checkout(request):
                         card=request.POST.get("stripeToken")
                     )
                     user.stripeId = new_customer.id
-                    user.save()
                     load_stripe_form_data_into_user_model(request, user)
                 except stripe.error.CardError as ce:
                     return False, ce
                 else:
+                    user.save()
                     return redirect('charge_success')
     return redirect('account')
 
@@ -42,7 +42,6 @@ def load_stripe_form_data_into_user_model(request, user):
     user.billingAddressState = request.POST.get('stripeBillingAddressState')
     user.billingAddressCity = request.POST.get('stripeBillingAddressCity')
     user.billingAddressCountry = request.POST.get('stripeBillingAddressCountry')
-    user.save()
 
 
 @login_required()
