@@ -61,9 +61,13 @@ def cancel_subscription_complete(request):
         customer = stripe.Customer.retrieve(request.user.stripeId)
         subscription_id = customer.subscriptions.get('data')[0].get('id')
         subscription = stripe.Subscription.retrieve(subscription_id)
+        # subscription.update(cancel_at_period_end=True) --- Documentation states to use this but it doesnt work
         subscription.cancel_at_period_end = True
-        for k, v in subscription.items():
-            print(k, v)
+        subscription.save()
+        request.user.cancel_at_period_end = True
+        request.user.save()
+        # for k, v in subscription.items():
+        #     print(k, v)
     except Exception as e:
         messages.error(request, "Looks like something went wrong. Are you sure you have a subscription set up?")
         print(e)
