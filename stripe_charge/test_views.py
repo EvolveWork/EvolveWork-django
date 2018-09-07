@@ -91,5 +91,13 @@ class TestCancelSubscription(TestCase):
         response = self.client.get(reverse('cancel_subscription'))
         self.assertTemplateUsed(response, 'charge_cancel.html')
 
-    def test_exception_raised(self):
-        self.assertRaises(Exception, stripe.Customer.retrieve, stripeId=1)
+    def test_post_to_charge_cancel_complete(self):
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+
+        user = User.objects.all().get(email='test@gmail.com')
+        user.stripeId = 'cus_DYsX3magOetnyJ'
+        user.save()
+
+        response = self.client.get(reverse('cancel_subscription_complete'))
+        self.assertTemplateUsed(response, 'charge_cancel_complete.html')
+
