@@ -1,14 +1,11 @@
 import datetime
-from unittest import mock
 
 import stripe
-from stripe.api_resources import Token
 from django.test import TestCase
 from django.urls import reverse
 from stripe.error import CardError
 
 from evolve_work import settings
-from stripe_charge.models import MockCustomer, MockToken
 from user_authentication.models import User
 
 
@@ -32,9 +29,8 @@ class TestCheckoutViewLoggedOut(TestCase):
 class TestCheckoutView(TestCase):
 
     def setUp(self):
-        self.user = User.objects.create_user(email='test@gmail.com', full_name='testable full_name',
-                                             password='testing_test_pw')
-        self.client.login(email=self.user.email, password=self.user.password)
+        User.objects.create_user(email='test@gmail.com', full_name='testable full_name', password='testing_test_pw')
+        self.client.login(email='test@gmail.com', password='testing_test_pw')
 
     def test_checkout_with_incorrect_card(self):
         try:
@@ -53,22 +49,23 @@ class TestCheckoutView(TestCase):
 
         stripe.api_key = settings.STRIPE_SECRET_KEY
 
-        # try:
-        token = stripe.Token.create(
-            card={
-                'number': '4242424242424242',
-                'exp_month': '6',
-                'exp_year': str(datetime.datetime.today().year + 1),
-                'cvc': '123',
-            }
-        )
-        response = self.client.post(reverse('checkout'), data={
-            'stripeToken': token.id,
-        })
-        self.assertTemplateUsed(response, 'charge_success.html')
+        try:
+            token = stripe.Token.create(
+                card={
+                    'number': '4242424242424242',
+                    'exp_month': '6',
+                    'exp_year': str(datetime.datetime.today().year + 1),
+                    'cvc': '123',
+                }
+            )
+            response = self.client.post(reverse('checkout'), data={
+                'stripeToken': token.id,
+            })
+            self.assertEqual(response.status_code, 302)
+            self.assertEqual(response.url, '/charge/success/')
 
-    # except Exception:
-    #     self.fail('Stripe api may be down.')
+        except Exception:
+            self.fail('Stripe api may be down.')
 
 
 class TestCancelSubscription(TestCase):
@@ -91,3 +88,4 @@ class TestCancelSubscription(TestCase):
 
         response = self.client.get(reverse('cancel_subscription_complete'))
         self.assertTemplateUsed(response, 'charge_cancel_complete.html')
+
