@@ -54,8 +54,8 @@ def account(request):
 
                 subscription_id = customer.subscriptions.get('data')[0].get('id')
                 subscription = stripe.Subscription.retrieve(subscription_id)
-                # for k, v in subscription.items():
-                #     print(k, v)
+                for k, v in subscription.items():
+                    print(k, v)
                 timestamp = datetime.datetime.fromtimestamp(current_period_end)
                 context = {
                     'timestamp': timestamp,
