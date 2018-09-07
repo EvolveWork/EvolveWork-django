@@ -89,3 +89,9 @@ class TestCancelSubscription(TestCase):
         response = self.client.get(reverse('cancel_subscription_complete'))
         self.assertTemplateUsed(response, 'charge_cancel_complete.html')
 
+
+class FailedTestForNotes(TestCase):
+
+    def test_fail_self(self):
+        self.fail('next -- delete stripe user after test')
+
