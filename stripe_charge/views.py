@@ -24,8 +24,8 @@ def checkout(request):
         if user.stripeId is None:
             if request.method == 'POST':
                 try:
-                    new_customer = create_stripe_customer(request, user)
                     load_stripe_form_data_into_user_model(request, user)
+                    new_customer = create_stripe_customer(request, user)
                     user.set_stripe_id(new_customer.id)
                 except stripe.error.CardError as ce:
                     return False, ce
