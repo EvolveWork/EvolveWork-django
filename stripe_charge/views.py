@@ -63,21 +63,34 @@ def cancel_subscription(request):
 
 @login_required()
 def cancel_subscription_complete(request):
+    user = request.user
     try:
-        customer = stripe.Customer.retrieve(request.user.stripeId)
-        subscription_id = customer.subscriptions.get('data')[0].get('id')
-        subscription = stripe.Subscription.retrieve(subscription_id)
+        customer = retrieve_stripe_customer(user)
+        subscription_id = get_subscription_id_from_stripe_customer(customer)
+        subscription = retrieve_stripe_subscription(subscription_id)
         # subscription.update(cancel_at_period_end=True) --- Documentation states to use this but it doesnt work
         subscription.cancel_at_period_end = True
         subscription.save()
-        request.user.cancel_at_period_end = True
-        request.user.save()
+        user.cancel_at_period_end = True
+        user.save()
         # for k, v in subscription.items():
         #     print(k, v)
     except Exception as e:
         messages.error(request, "Looks like something went wrong. Are you sure you have a subscription set up?")
         print(e)
     return render(request, 'charge_cancel_complete.html', {})
+
+
+def retrieve_stripe_customer(user):
+    return stripe.Customer.retrieve(user.stripeId)
+
+
+def get_subscription_id_from_stripe_customer(customer):
+    return customer.subscriptions.get('data')[0].get('id')
+
+
+def retrieve_stripe_subscription(subscription_id):
+    return stripe.Subscription.retrieve(subscription_id)
 
 
 def renew_subscription(request):
