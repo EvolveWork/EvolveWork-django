@@ -103,6 +103,9 @@ class User(AbstractBaseUser):
             return self.full_name[:self.full_name.find(' ')]
         return self.email
 
+    def set_stripe_id(self, stripe_id):
+        self.stripeId = stripe_id
+
     def has_perm(self, perm, obj=None):
         return True
 

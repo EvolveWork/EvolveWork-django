@@ -9,9 +9,12 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 def charge_view(request):
     user = request.user
-    if user.is_authenticated and user.stripeId is None:
-        context = {"stripe_key": settings.STRIPE_TEST_PUBLIC_KEY}
-        return render(request, "charge.html", context)
+    if user.is_authenticated:
+        if user.stripeId:
+            return redirect('renew_subscription')
+        if user.stripeId is None:
+            context = {"stripe_key": settings.STRIPE_TEST_PUBLIC_KEY}
+            return render(request, "charge.html", context)
     return redirect('account')
 
 
@@ -21,12 +24,8 @@ def checkout(request):
         if user.stripeId is None:
             if request.method == 'POST':
                 try:
-                    new_customer = stripe.Customer.create(
-                        email=user.email,
-                        plan='plan_DJBWu9zs91csmJ',
-                        card=request.POST.get("stripeToken")
-                    )
-                    user.stripeId = new_customer.id
+                    new_customer = create_stripe_customer(request, user)
+                    user.set_stripe_id(new_customer.id)
                     load_stripe_form_data_into_user_model(request, user)
                 except stripe.error.CardError as ce:
                     return False, ce
@@ -34,6 +33,14 @@ def checkout(request):
                     user.save()
                     return redirect('charge_success')
     return redirect('account')
+
+
+def create_stripe_customer(request, user):
+    return stripe.Customer.create(
+        email=user.email,
+        plan='plan_DJBWu9zs91csmJ',
+        card=request.POST.get("stripeToken")
+    )
 
 
 def load_stripe_form_data_into_user_model(request, user):
@@ -74,11 +81,8 @@ def cancel_subscription_complete(request):
 
 
 def renew_subscription(request):
-    context = {}
-    return render(request, 'renew_subscription.html', context)
+    return render(request, 'renew_subscription.html', {})
 
 
 def renew_subscription_complete(request):
-    context = {}
-    return render(request, 'renew_subscription_complete.html', context)
-
+    return render(request, 'renew_subscription_complete.html', {})
