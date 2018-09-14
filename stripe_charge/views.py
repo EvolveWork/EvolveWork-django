@@ -25,8 +25,8 @@ def checkout(request):
             if request.method == 'POST':
                 try:
                     new_customer = create_stripe_customer(request, user)
-                    user.set_stripe_id(new_customer.id)
                     load_stripe_form_data_into_user_model(request, user)
+                    user.set_stripe_id(new_customer.id)
                 except stripe.error.CardError as ce:
                     return False, ce
                 else:
@@ -77,7 +77,6 @@ def cancel_subscription_complete(request):
         #     print(k, v)
     except Exception as e:
         messages.error(request, "Looks like something went wrong. Are you sure you have a subscription set up?")
-        print(e)
     return render(request, 'charge_cancel_complete.html', {})
 
 
