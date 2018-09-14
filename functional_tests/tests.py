@@ -95,7 +95,7 @@ class UserTestsWhileLoggedIn(TestCase):
         # User sees new navigation options
         self.assertIn('<li><a title="Charge" class="navigation" href="/charge/">Subscribe</a></li>',
                       processed_response)
-        self.assertIn('<li><a title="Account" class="navigation" href="/account/">Account</a></li>',
+        self.assertIn('<li><a title="Account" class="navigation" href="/charge/account/">Account</a></li>',
                       processed_response)
         self.assertIn('<li><a title="Logout" class="navigation" href="/logout/">Logout</a></li>',
                       processed_response)

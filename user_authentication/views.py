@@ -1,24 +1,15 @@
-import datetime
-
 import stripe
-from django.contrib import messages
-from django.contrib.auth import login, get_user_model
+from django.contrib.auth import login
 from django.shortcuts import render, redirect
-from stripe.error import InvalidRequestError
 
 from evolve_work import settings
-from user_authentication.models import Plan
 from .forms import SignupForm
 
-User = get_user_model()
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
-def home_page_view(request, notification=None):
-    context = {
-        'notification': notification,
-    }
-    return render(request, 'home.html', context)
+def home_page_view(request):
+    return render(request, 'home.html', {})
 
 
 def logout(request):
@@ -40,37 +31,6 @@ def signup(request):
     else:
         form = SignupForm()
     return render(request, 'signup.html', {'form': form})
-
-
-def account(request):
-    user = request.user
-    if user.is_authenticated:
-        if user.stripeId:
-            try:
-                # load_subscription_data(user)
-                customer = stripe.Customer.retrieve(user.stripeId)
-                current_period_end = customer.subscriptions.get('data')[0].get('current_period_end')
-                period_end = customer.subscriptions.get('data')[0].get('cancel_at_period_end')
-
-                # subscription_id = customer.subscriptions.get('data')[0].get('id')
-                # subscription = stripe.Subscription.retrieve(subscription_id)
-                # for k, v in subscription.items():
-                #     print(k, v)
-                timestamp = datetime.datetime.fromtimestamp(current_period_end)
-                context = {
-                    'timestamp': timestamp,
-                    'current_period_end': current_period_end,
-                    'period_end': period_end
-                }
-                return render(request, 'account.html', context)
-            except InvalidRequestError as e:
-                messages.warning(request, 'Looks like something went wrong. Please try again later.')
-                print(e)
-            except Exception as e:
-                messages.warning(request, 'Looks like something went wrong. Please try again later.')
-                print(e)
-        return render(request, 'account.html', {})
-    return redirect('login')
 
 
 # def load_subscription_data(user):

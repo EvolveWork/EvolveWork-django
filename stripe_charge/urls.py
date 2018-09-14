@@ -1,10 +1,12 @@
 from django.urls import path
 
-from .views import charge_view, checkout, charge_success, cancel_subscription, cancel_subscription_complete
+from .views import charge_view, checkout, charge_success, cancel_subscription, cancel_subscription_complete, account
+
 # renew_subscription, renew_subscription_complete
 
 urlpatterns = [
     path('', charge_view, name='charge'),
+    path('account/', account, name='account'),
     path('checkout/', checkout, name="checkout"),
     path('success/', charge_success, name="charge_success"),
     path('cancel/', cancel_subscription, name='cancel_subscription'),

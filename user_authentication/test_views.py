@@ -48,21 +48,3 @@ class TestSignUpViewWhileLoggedOut(TestCase):
             'password2': 'testing_test_pw'
         })
         self.assertRedirects(response, reverse('home'))
-
-
-class TestAccountView(TestCase):
-
-    def setUp(self):
-        User.objects.create_user(email='test@gmail.com', full_name='testable full_name',
-                                 password='testing_test_pw')
-        self.client.login(email='test@gmail.com', password='testing_test_pw')
-
-    def test_context_sent_to_template_when_user_has_stripe_id(self):
-        user = User.objects.get(email='test@gmail.com')
-        user.stripeId = 'cus_DYsX3magOetnyJ'
-
-        response = self.client.get(reverse('account'))
-        self.assertTrue(response.context['timestamp'])
-        self.assertTrue(response.context['current_period_end'])
-        self.assertTrue(response.context['timestamp'])
-
