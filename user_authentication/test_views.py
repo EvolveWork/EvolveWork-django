@@ -57,7 +57,12 @@ class TestAccountView(TestCase):
                                  password='testing_test_pw')
         self.client.login(email='test@gmail.com', password='testing_test_pw')
 
-    def test_invalid_request_error(self):
+    def test_context_sent_to_template_when_user_has_stripe_id(self):
         user = User.objects.get(email='test@gmail.com')
-        user.stripeId = '1'
-        self.assertRaises(stripe.error.InvalidRequestError, stripe.Customer.retrieve, user.stripeId)
+        user.stripeId = 'cus_DYsX3magOetnyJ'
+
+        response = self.client.get(reverse('account'))
+        self.assertTrue(response.context['timestamp'])
+        self.assertTrue(response.context['current_period_end'])
+        self.assertTrue(response.context['timestamp'])
+

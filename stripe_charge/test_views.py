@@ -45,8 +45,6 @@ class TestCheckoutView(TestCase):
 
     def test_charge_checkout_view(self):
 
-        # TODO - Need to be sure that the proper template/redirection is occuring.
-
         stripe.api_key = settings.STRIPE_SECRET_KEY
 
         try:
@@ -81,7 +79,6 @@ class TestCancelSubscription(TestCase):
 
     def test_post_to_charge_cancel_complete(self):
         stripe.api_key = settings.STRIPE_SECRET_KEY
-
         user = User.objects.all().get(email='test@gmail.com')
         user.stripeId = 'cus_DYsX3magOetnyJ'
         user.save()
