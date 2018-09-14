@@ -57,8 +57,8 @@ class UserTestsWhileLoggedOutSelenium(unittest.TestCase):
 
         # Testing on redirect status code after logging in.
         self.client.login(email='testoroony@gmail.com', password='testing_test_pw')
-        response = self.client.get(reverse('logout'))
-        # self.assertEqual(response.status_code, 200)
+        response = self.client.get(reverse('logout_success'))
+        self.assertEqual(response.status_code, 302)
 
     def test_user_login(self):
         # User loads up login page
@@ -77,8 +77,9 @@ class UserTestsWhileLoggedOutSelenium(unittest.TestCase):
         self.client.login(email='test@gmail.com', password='testing_test_pw')
 
         # Testing on redirect status code after logging in.
-        response = self.client.get(reverse('logout'))
-        # self.assertEqual(response.status_code, 200)
+        response = self.client.get(reverse('logout_success'))
+
+        self.assertEqual(response.status_code, 302)
 
 
 class UserTestsWhileLoggedIn(TestCase):
