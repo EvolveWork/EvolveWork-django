@@ -18,6 +18,7 @@ six = "*"
 stripe = "*"
 "urllib3" = "*"
 coverage = "*"
+black = "*"
 
 [dev-packages]
 
