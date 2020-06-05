@@ -1,13 +1,15 @@
-certifi==2018.4.16
+-i https://pypi.org/simple/
+certifi==2018.8.13
 chardet==3.0.4
-Django==2.0.7
 django-appconf==1.0.2
-django-ipware==1.1.6
+django-ipware==2.1.0
+django==2.2.13
 idna==2.7
 jsonfield==2.0.2
 pytz==2018.5
 requests==2.19.1
-selenium==3.13.0
+selenium==3.14.0
 six==1.11.0
-stripe==2.0.1
+sqlparse==0.3.1
+stripe==2.5.0
 urllib3==1.23
